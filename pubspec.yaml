@@ -10,8 +10,11 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flame:
-    git:
-      url: https://github.com/flame-engine/flame.git
-      ref: main
-      path: packages/flame
+  flame: ^1.21.0
+  flame_audio: ^1.2.0
+  flutter_bloc: ^8.1.0 # For BLOC state management
+  equatable: ^2.0.5 # Optional, helps with state comparison in BLOC
+
+flutter:
+  assets:
+    - assets/images/backgrounds/
