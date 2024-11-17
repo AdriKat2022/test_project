@@ -19,3 +19,4 @@ flutter:
   assets:
     - assets/images/backgrounds/
     - assets/images/ships/
+    - assets/images/bullets/

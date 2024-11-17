@@ -2,9 +2,7 @@ import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flame/parallax.dart';
-
 import 'package:flutter/material.dart';
-
 import 'package:test_project/components/player.dart';
 
 class SpaceShooterGame extends FlameGame with PanDetector {
@@ -32,6 +30,16 @@ class SpaceShooterGame extends FlameGame with PanDetector {
   @override
   void onPanUpdate(DragUpdateInfo info) {
     player.move(info.delta.global);
+  }
+
+  @override
+  void onPanStart(DragStartInfo info){
+    player.startShooting();
+  }
+
+  @override
+  void onPanEnd(DragEndInfo info){
+    player.stopShooting();
   }
 }
 
