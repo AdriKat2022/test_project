@@ -14,9 +14,13 @@ class SpaceShooterGame extends FlameGame with PanDetector {
   Future<void> onLoad() async {
     await super.onLoad();
 
+    final playerSprite = await loadSprite('ships/player_idle.png');
+
     player = Player()
+        ..sprite = playerSprite
         ..position = size/2
-        ..size = Vector2(50, 50)
+        ..x = size.x/2
+        ..y = size.y/2
         ..width = 50
         ..height = 100
         ..anchor = Anchor.center;
