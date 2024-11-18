@@ -1,17 +1,15 @@
 import 'package:flame/components.dart';
 import 'package:test_project/utils/poolable_object.dart';
 
-class ObjectPool<T extends PoolableObject>{
-  final List<T> pool = [];
+class ObjectPool<T extends Component>{
+  final List<PoolableObject<T>> pool = [];
   final int maxSize;
   final T Function() createObjectFunction;
-  // Can be defined so this is executed 
-  final void Function(T)? resetObjectFunction;
 
-  ObjectPool({required this.maxSize, required this.createObjectFunction, this.resetObjectFunction = null});
+  ObjectPool({required this.maxSize, required this.createObjectFunction});
 
   // Get an object from the pool (or create one)
-  T? getObject({Vector2? spawnPosition = null, bool resetObject = true}){
+  PoolableObject<T>? getObject(){
 
     // Search for an available object in the pool (with the isMounted property)
     for(var object in pool){
@@ -23,9 +21,9 @@ class ObjectPool<T extends PoolableObject>{
 
     // Create a new object if none is available
     if (pool.length < maxSize){
-      final newObject = createObjectFunction();
-      pool.add(newObject);
-      return newObject;
+      final poolableObject = PoolableObject(createObjectFunction());
+      pool.add(poolableObject);
+      return poolableObject;
     }
 
     print("Pool is all occupied!");
