@@ -1,6 +1,7 @@
 import 'package:flame/components.dart';
+import 'package:test_project/utils/poolable_object.dart';
 
-class ObjectPool<T extends PositionComponent>{
+class ObjectPool<T extends PoolableObject>{
   final List<T> pool = [];
   final int maxSize;
   final T Function() createObjectFunction;
@@ -14,9 +15,8 @@ class ObjectPool<T extends PositionComponent>{
 
     // Search for an available object in the pool (with the isMounted property)
     for(var object in pool){
-      if(!object.isMounted){
-      if (resetObject && resetObjectFunction != null) resetObjectFunction!(object);
-        if (spawnPosition != null) object.position = spawnPosition;
+      if(!object.isObjectPooled()){
+        object.unpool();
         return object;
       }
     }
@@ -24,21 +24,15 @@ class ObjectPool<T extends PositionComponent>{
     // Create a new object if none is available
     if (pool.length < maxSize){
       final newObject = createObjectFunction();
-      if (resetObject && resetObjectFunction != null) resetObjectFunction!(newObject);
-      if (spawnPosition != null) newObject.position = spawnPosition;
       pool.add(newObject);
       return newObject;
     }
 
-    print("Pool depleted !");
+    print("Pool is all occupied!");
     return null;
   }
 
-  void resetPool(){
-    for (var obj in pool){
-      if(obj.isMounted){
-        obj.removeFromParent();
-      }
-    }
+  void emptyPool(){
+    pool.clear();
   }
 }
