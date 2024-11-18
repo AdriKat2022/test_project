@@ -1,10 +1,12 @@
 import 'package:flame/components.dart';
 import 'package:test_project/space_shooter_game.dart';
 import 'package:test_project/components/bullet.dart';
+import 'package:test_project/utils/object_pool.dart';
 
 class Player extends SpriteAnimationComponent with HasGameReference<SpaceShooterGame> {
 
   late final SpawnComponent _bulletSpawner;
+  late final ObjectPool<Bullet> _objectPool;
 
   Player() : super(
     size: Vector2(100, 150),
@@ -27,14 +29,20 @@ class Player extends SpriteAnimationComponent with HasGameReference<SpaceShooter
       ),
     );
 
-    // Create Bullet Spawner
+    // Initialize ObjectPool 
+    _objectPool = ObjectPool<Bullet>(
+      maxSize: 20,
+      createObjectFunction: () => Bullet(),
+    );
+
+    // Initialize Bullet Spawner using the ObjectPool
     _bulletSpawner = SpawnComponent(
       period: .2,
       selfPositioning: true,
       factory: (index) {
-        return Bullet(
-          position: position + Vector2(0, -height/2),
-        );
+        return _objectPool.getObject(
+          spawnPosition: position + Vector2(0, -height/2),
+        )!;
       },
       autoStart: false,
     );
