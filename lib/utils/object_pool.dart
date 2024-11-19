@@ -16,7 +16,7 @@ class ObjectPool<T extends PoolableObject>{
     for(var object in pool){
       if(object.isPooled){
         object.unpool();
-        print("Object un-pooled!");
+        print(T.toString() + " un-pooled!");
         return object;
       }
     }
@@ -26,7 +26,7 @@ class ObjectPool<T extends PoolableObject>{
       final poolableObject = createObjectFunction();
       pool.add(poolableObject);
       poolableObject.unpool();
-      print("Object created and un-pooled!");
+      print(T.toString() + " created and un-pooled!");
       return poolableObject;
     }
 

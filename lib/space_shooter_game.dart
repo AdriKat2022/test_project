@@ -3,7 +3,11 @@ import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flame/parallax.dart';
 import 'package:flutter/material.dart';
+import 'package:test_project/components/enemy.dart';
+import 'package:test_project/components/wave.dart';
 import 'package:test_project/components/player.dart';
+import 'package:test_project/data/wave_data.dart';
+import 'package:test_project/utils/object_pool.dart';
 
 class SpaceShooterGame extends FlameGame with PanDetector {
 
@@ -25,6 +29,38 @@ class SpaceShooterGame extends FlameGame with PanDetector {
 
     player = Player();
     add(player);
+
+    // Create the enemy pool (could be moved into a LEVEL class)
+    final enemyPool = ObjectPool<Enemy>(
+      maxSize: 20,
+      createObjectFunction: () => Enemy(),
+    );
+
+    // Add the waves
+    add(Wave(enemyPool: enemyPool, waveDataList: [
+      WaveData(
+        enemies: [
+          // 3 enemies in line
+          EnemyData(type: 'basic', position: Vector2(100, -50), delay: 0),
+          EnemyData(type: 'basic', position: Vector2(200, -50), delay: 0),
+          EnemyData(type: 'basic', position: Vector2(300, -50), delay: 2),
+          // 2 enemies in line
+          EnemyData(type: 'basic', position: Vector2(400, -50), delay: 0),
+          EnemyData(type: 'basic', position: Vector2(500, -50), delay: 0),
+        ],
+        prewaveDelay: 2,
+      ),
+      WaveData(
+        enemies: [
+          EnemyData(type: 'basic', position: Vector2(100, -50), delay: 0.3),
+          EnemyData(type: 'basic', position: Vector2(200, -50), delay: 0.3),
+          EnemyData(type: 'basic', position: Vector2(300, -50), delay: 0.3),
+          EnemyData(type: 'basic', position: Vector2(400, -50), delay: 0.3),
+          EnemyData(type: 'basic', position: Vector2(500, -50), delay: 0.3),
+        ],
+        prewaveDelay: 10,
+      ),
+    ]));
   }
 
   @override

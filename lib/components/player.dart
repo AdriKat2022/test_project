@@ -6,7 +6,7 @@ import 'package:test_project/utils/object_pool.dart';
 class Player extends SpriteAnimationComponent with HasGameReference<SpaceShooterGame> {
 
   late final SpawnComponent _bulletSpawner;
-  late final ObjectPool<Bullet> _objectPool;
+  late final ObjectPool<Bullet> _playerBulletPool;
 
   Player() : super(
     size: Vector2(100, 150),
@@ -29,8 +29,8 @@ class Player extends SpriteAnimationComponent with HasGameReference<SpaceShooter
       ),
     );
 
-    // Initialize ObjectPool 
-    _objectPool = ObjectPool<Bullet>(
+    // Initialize BulletPool 
+    _playerBulletPool = ObjectPool<Bullet>(
       maxSize: 20,
       createObjectFunction: () => Bullet(),
     );
@@ -41,7 +41,7 @@ class Player extends SpriteAnimationComponent with HasGameReference<SpaceShooter
       selfPositioning: true,
       factory: (index) {
 
-        final bullet = _objectPool.getObject();
+        final bullet = _playerBulletPool.getObject();
 
         if (bullet != null){
           bullet.position = position + Vector2(0, -height/2);
