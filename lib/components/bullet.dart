@@ -1,9 +1,13 @@
 import 'package:test_project/space_shooter_game.dart';
 import 'package:flame/components.dart';
+import 'package:test_project/utils/poolable_object.dart';
 
-class Bullet extends SpriteAnimationComponent with HasGameReference<SpaceShooterGame> {
+class Bullet extends SpriteAnimationComponent with HasGameReference<SpaceShooterGame> implements PoolableObject {
+
+  bool isPooled = true;
+
   Bullet({
-    super.position,
+    super.position
   }) : super(
       size: Vector2(25,50),
       anchor: Anchor.center,
@@ -30,7 +34,27 @@ class Bullet extends SpriteAnimationComponent with HasGameReference<SpaceShooter
     position.y += dt * -700;
 
     if (position.y < -height){
-      removeFromParent();
+      deleteBullet();
     }
+  }
+
+  void deleteBullet(){
+    removeFromParent();
+    pool();
+  }
+  
+  @override
+  void pool() {
+    isPooled = true;
+  }
+  
+  @override
+  void reset() {
+    // TODO: implement reset
+  }
+  
+  @override
+  void unpool() {
+    isPooled = false;
   }
 }

@@ -44,8 +44,8 @@ class Player extends SpriteAnimationComponent with HasGameReference<SpaceShooter
         final bullet = _objectPool.getObject();
 
         if (bullet != null){
-          bullet.object.position = position + Vector2(0, -height/2);
-          return bullet.object;
+          bullet.position = position + Vector2(0, -height/2);
+          return bullet;
         }
         throw Exception("Pool is all occupied!");
       },

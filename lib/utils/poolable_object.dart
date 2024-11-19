@@ -1,20 +1,14 @@
-import 'package:flame/components.dart';
-
-class PoolableObject<T extends Component> {
+abstract class PoolableObject {
+  
   bool isPooled = false;
-  final T object;
 
-  PoolableObject(this.object);
-
-  bool isObjectPooled(){
-    return isPooled;
-  }
-
-  void pool() {
+  void pool(){
     isPooled = true;
   }
 
-  void unpool() {
+  void unpool(){
     isPooled = false;
   }
+
+  void reset();
 }
