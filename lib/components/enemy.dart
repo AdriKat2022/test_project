@@ -1,9 +1,11 @@
+import 'package:flame/collisions.dart';
+import 'package:test_project/components/bullet.dart';
 import 'package:test_project/space_shooter_game.dart';
 import 'package:flame/effects.dart';
 import 'package:flame/components.dart';
 import 'package:test_project/utils/poolable_object.dart';
 
-class Enemy extends SpriteAnimationComponent with HasGameReference<SpaceShooterGame> implements PoolableObject {
+class Enemy extends SpriteAnimationComponent with HasGameReference<SpaceShooterGame>, CollisionCallbacks implements PoolableObject {
 
   static const enemySize = 50.0;
   static const enemyBaseSpeed = 100;
@@ -21,6 +23,8 @@ class Enemy extends SpriteAnimationComponent with HasGameReference<SpaceShooterG
   Future<void> onLoad() async {
     await super.onLoad();
 
+    add(RectangleHitbox());
+
     animation = await game.loadSpriteAnimation(
       'ships/enemy.png',
       SpriteAnimationData.sequenced(
@@ -33,6 +37,7 @@ class Enemy extends SpriteAnimationComponent with HasGameReference<SpaceShooterG
 
   @override
   void update(double dt) {
+    if (isPooled) return;
     super.update(dt);
 
     if (isDead) return;
@@ -45,6 +50,7 @@ class Enemy extends SpriteAnimationComponent with HasGameReference<SpaceShooterG
   }
 
   void initializeEnemy(){
+    scale = Vector2.all(1);
     isDead = false;
   }
 
@@ -52,13 +58,10 @@ class Enemy extends SpriteAnimationComponent with HasGameReference<SpaceShooterG
     if (isDead) return;
     isDead = true;
 
-    // Stop the animation
-    animation = null;
-
     // Make an effect
     this.add(ScaleEffect.by(
       Vector2.all(0.5),
-      EffectController(duration: 0.5),
+      EffectController(duration: 0.5, ),
       onComplete: () => {
         disable()
       }
@@ -68,6 +71,16 @@ class Enemy extends SpriteAnimationComponent with HasGameReference<SpaceShooterG
   void disable(){
     removeFromParent();
     pool();
+  }
+
+  @override
+  void onCollisionStart(Set<Vector2> intersectionPoints, PositionComponent other) {
+    super.onCollisionStart(intersectionPoints, other);
+    if (other is Bullet){
+      other.deleteBullet();
+      // TODO: Add score, play an effect and a sound
+      death();
+    }
   }
   
   @override

@@ -9,7 +9,7 @@ import 'package:test_project/components/player.dart';
 import 'package:test_project/data/wave_data.dart';
 import 'package:test_project/utils/object_pool.dart';
 
-class SpaceShooterGame extends FlameGame with PanDetector {
+class SpaceShooterGame extends FlameGame with PanDetector, HasCollisionDetection {
 
   late Player player;
 

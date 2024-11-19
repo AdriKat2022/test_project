@@ -1,3 +1,4 @@
+import 'package:flame/collisions.dart';
 import 'package:test_project/space_shooter_game.dart';
 import 'package:flame/components.dart';
 import 'package:test_project/utils/poolable_object.dart';
@@ -17,6 +18,8 @@ class Bullet extends SpriteAnimationComponent with HasGameReference<SpaceShooter
   Future<void> onLoad() async {
     await super.onLoad();
 
+    add(RectangleHitbox(collisionType: CollisionType.passive));
+
     animation = await game.loadSpriteAnimation(
       'bullets/player_bullet_sheet.png',
       SpriteAnimationData.sequenced(
@@ -30,6 +33,7 @@ class Bullet extends SpriteAnimationComponent with HasGameReference<SpaceShooter
 
   @override
   void update(double dt){
+    if (isPooled) return;
     super.update(dt);
     position.y += dt * -700;
 
