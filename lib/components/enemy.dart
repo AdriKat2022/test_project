@@ -1,5 +1,7 @@
 import 'package:flame/collisions.dart';
+import 'package:flutter/animation.dart';
 import 'package:test_project/components/bullet.dart';
+import 'package:test_project/effects/explosion.dart';
 import 'package:test_project/space_shooter_game.dart';
 import 'package:flame/effects.dart';
 import 'package:flame/components.dart';
@@ -60,8 +62,8 @@ class Enemy extends SpriteAnimationComponent with HasGameReference<SpaceShooterG
 
     // Make an effect
     this.add(ScaleEffect.by(
-      Vector2.all(0.5),
-      EffectController(duration: 0.5, ),
+      Vector2.all(0.001),
+      EffectController(duration: 0.35, curve: Curves.easeOutExpo),
       onComplete: () => {
         disable()
       }
@@ -75,10 +77,13 @@ class Enemy extends SpriteAnimationComponent with HasGameReference<SpaceShooterG
 
   @override
   void onCollisionStart(Set<Vector2> intersectionPoints, PositionComponent other) {
+    if (isDead) return;
     super.onCollisionStart(intersectionPoints, other);
     if (other is Bullet){
       other.deleteBullet();
-      // TODO: Add score, play an effect and a sound
+      // TODO: Add score and a sound
+      game.add(Explosion(position: position));
+      print("explosion at " + position.toString());
       death();
     }
   }
