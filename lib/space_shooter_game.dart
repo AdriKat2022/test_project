@@ -7,6 +7,7 @@ import 'package:test_project/components/enemy.dart';
 import 'package:test_project/components/wave.dart';
 import 'package:test_project/components/player.dart';
 import 'package:test_project/data/wave_data.dart';
+import 'package:test_project/ui/button.dart';
 import 'package:test_project/utils/object_pool.dart';
 
 class SpaceShooterGame extends FlameGame with PanDetector, HasCollisionDetection {
@@ -61,6 +62,21 @@ class SpaceShooterGame extends FlameGame with PanDetector, HasCollisionDetection
         prewaveDelay: 10,
       ),
     ]));
+
+    // Add the button test
+    add(
+      ButtonComponent(
+        text: 'Restart',
+        onPressed: () {
+          print("yay! Restart callback works");
+        },
+        normalSprite: await Sprite.load('ui/return_btn.png'),
+        hoverSprite: await Sprite.load('ui/return_btn_hover.png'),
+        pressedSprite: await Sprite.load('ui/return_btn_pressed.png'),
+        position: Vector2(100, 100),
+        size: Vector2.all(50)
+      ),
+    );
   }
 
   @override
