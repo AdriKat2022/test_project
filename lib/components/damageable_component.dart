@@ -1,3 +1,4 @@
+// HP are stored as an integer value, and the max HP is set in the constructor.
 class DamageableComponent {
   int maxHp;
   late int hp;
@@ -6,10 +7,18 @@ class DamageableComponent {
     hp = maxHp;
   }
 
-  void takeDamage(int damage) {
+  void setMaxHp(int newMaxHp) {
+    maxHp = newMaxHp;
+    hp = maxHp;
+  }
+
+  // Returns true if the entity is dead
+  bool takeDamage(int damage) {
     hp -= damage;
     if (hp < 0) hp = 0;
     // TODO: Add a sound effect + visual effect
+
+    return isDead();
   }
 
   void heal(int healAmount) {

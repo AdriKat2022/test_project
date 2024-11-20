@@ -1,12 +1,15 @@
 import 'package:flame/components.dart';
+import 'package:test_project/components/damageable_component.dart';
 import 'package:test_project/space_shooter_game.dart';
 import 'package:test_project/components/bullet.dart';
 import 'package:test_project/utils/object_pool.dart';
 
 class Player extends SpriteAnimationComponent with HasGameReference<SpaceShooterGame> {
 
+  final DamageableComponent damageableComponent = DamageableComponent(100);
   late final SpawnComponent _bulletSpawner;
   late final ObjectPool<Bullet> _playerBulletPool;
+  
 
   Player() : super(
     size: Vector2(100, 150),
@@ -28,6 +31,8 @@ class Player extends SpriteAnimationComponent with HasGameReference<SpaceShooter
         textureSize: Vector2(32, 48),
       ),
     );
+
+    // TODO: Move the bullet pool and the bullet spawner to a separate class (weapon component)
 
     // Initialize BulletPool 
     _playerBulletPool = ObjectPool<Bullet>(

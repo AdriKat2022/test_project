@@ -1,6 +1,7 @@
 import 'package:flame/collisions.dart';
 import 'package:flutter/animation.dart';
 import 'package:test_project/components/bullet.dart';
+import 'package:test_project/components/damageable_component.dart';
 import 'package:test_project/effects/explosion.dart';
 import 'package:test_project/space_shooter_game.dart';
 import 'package:flame/effects.dart';
@@ -12,14 +13,37 @@ class Enemy extends SpriteAnimationComponent with HasGameReference<SpaceShooterG
   static const enemySize = 50.0;
   static const enemyBaseSpeed = 100;
 
+  final DamageableComponent damageableComponent = DamageableComponent(0);
+
   bool isDead = false;
 
   Enemy({
-      super.position,
+      super.position, int health = 0
     }) : super(
             size: Vector2.all(enemySize),
             anchor: Anchor.center,
-          );
+          )
+  {
+    if (health > 0){
+      setHealth(health);
+    }
+  }
+
+  void setHealth(int health){
+    damageableComponent.setMaxHp(health);
+  }
+
+  // void setSprite(String spritePath) async {
+  //   // Load Animation
+  //   animation = await game.loadSpriteAnimation(
+  //     spritePath,
+  //     SpriteAnimationData.sequenced(
+  //       amount: 2,
+  //       stepTime: .4,
+  //       textureSize: Vector2(7,6),
+  //     ),
+  //   );
+  // }
   
   @override
   Future<void> onLoad() async {
@@ -60,7 +84,9 @@ class Enemy extends SpriteAnimationComponent with HasGameReference<SpaceShooterG
     if (isDead) return;
     isDead = true;
 
-    // Make an effect
+    // TODO: Add score and a sound
+    game.add(Explosion(position: position));
+    print("explosion at " + position.toString());
     this.add(ScaleEffect.by(
       Vector2.all(0.001),
       EffectController(duration: 0.35, curve: Curves.easeOutExpo),
@@ -79,12 +105,13 @@ class Enemy extends SpriteAnimationComponent with HasGameReference<SpaceShooterG
   void onCollisionStart(Set<Vector2> intersectionPoints, PositionComponent other) {
     if (isDead) return;
     super.onCollisionStart(intersectionPoints, other);
+    // We're checking for bullets but we could also check for a interface for diversity (like DamageableBody)
     if (other is Bullet){
+      if(damageableComponent.takeDamage(other.getDamage())){
+        print("Enemy is dead");
+        death();
+      }
       other.deleteBullet();
-      // TODO: Add score and a sound
-      game.add(Explosion(position: position));
-      print("explosion at " + position.toString());
-      death();
     }
   }
   

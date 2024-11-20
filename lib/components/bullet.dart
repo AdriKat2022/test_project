@@ -5,7 +5,9 @@ import 'package:test_project/utils/poolable_object.dart';
 
 class Bullet extends SpriteAnimationComponent with HasGameReference<SpaceShooterGame> implements PoolableObject {
 
+  double bulletSpeed = 700;  
   bool isPooled = true;
+  int baseDamage = 10;
 
   Bullet({
     super.position
@@ -35,11 +37,19 @@ class Bullet extends SpriteAnimationComponent with HasGameReference<SpaceShooter
   void update(double dt){
     if (isPooled) return;
     super.update(dt);
-    position.y += dt * -700;
+    position.y += dt * -bulletSpeed;
 
     if (position.y < -height){
       deleteBullet();
     }
+  }
+
+  void setDamage(int newDamage){
+    baseDamage = newDamage;
+  }
+
+  int getDamage(){
+    return baseDamage;
   }
 
   void deleteBullet(){

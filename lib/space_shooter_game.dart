@@ -34,7 +34,7 @@ class SpaceShooterGame extends FlameGame with PanDetector, HasCollisionDetection
     // Create the enemy pool (could be moved into a LEVEL class)
     final enemyPool = ObjectPool<Enemy>(
       maxSize: 20,
-      createObjectFunction: () => Enemy(),
+      createObjectFunction: () => Enemy(health: 20),
     );
 
     // Add the waves
@@ -48,6 +48,8 @@ class SpaceShooterGame extends FlameGame with PanDetector, HasCollisionDetection
           // 2 enemies in line
           EnemyData(type: 'basic', position: Vector2(400, -50), delay: 0),
           EnemyData(type: 'basic', position: Vector2(500, -50), delay: 0),
+          EnemyData(type: 'basic', position: Vector2(600, -50), delay: 0),
+          EnemyData(type: 'basic', position: Vector2(700, -50), delay: 0),
         ],
         prewaveDelay: 2,
       ),
@@ -58,6 +60,16 @@ class SpaceShooterGame extends FlameGame with PanDetector, HasCollisionDetection
           EnemyData(type: 'basic', position: Vector2(300, -50), delay: 0.3),
           EnemyData(type: 'basic', position: Vector2(400, -50), delay: 0.3),
           EnemyData(type: 'basic', position: Vector2(500, -50), delay: 0.3),
+          EnemyData(type: 'basic', position: Vector2(600, -50), delay: 0.3),
+          EnemyData(type: 'basic', position: Vector2(700, -50), delay: 0.3),
+          // Other Line
+          EnemyData(type: 'basic', position: Vector2(700, -50), delay: 0.3),
+          EnemyData(type: 'basic', position: Vector2(600, -50), delay: 0.3),
+          EnemyData(type: 'basic', position: Vector2(500, -50), delay: 0.3),
+          EnemyData(type: 'basic', position: Vector2(400, -50), delay: 0.3),
+          EnemyData(type: 'basic', position: Vector2(300, -50), delay: 0.3),
+          EnemyData(type: 'basic', position: Vector2(200, -50), delay: 0.3),
+          EnemyData(type: 'basic', position: Vector2(100, -50), delay: 0.3),
         ],
         prewaveDelay: 10,
       ),
