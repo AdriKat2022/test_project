@@ -60,18 +60,23 @@ class Wave extends Component with HasGameReference<SpaceShooterGame> {
   }
 
   /// Spawns the next enemy in the wave and set the delay for the next enemy.
-  void spawnNextEnemy(WaveData currentWave) {
+  void spawnNextEnemy(WaveData currentWave) async {
     // Spawn the next enemy in the wave.
     final enemyData = currentWave.enemies.removeAt(0);
-
-    // For now just print the enemy type.
-    print("spawning enemy " + enemyData.type + " at " + enemyData.position.toString() + "(delay of " + enemyData.delay.toString() + ")");
 
     // Spawn the enemy using the pool.
     final enemy = enemyPool.get();
     if (enemy != null) {
       print("enemy spawned successfully (identity: " + identityHashCode(enemy).toString() + ")");
+      // Get enemy properties
+      final enemyProperties = EnemyTypes.getProperties(enemyData.type);
       enemy.position = enemyData.position;
+      enemy.speed = enemyProperties['speed'];
+      enemy.moveStrategy = enemyProperties['move_strategy'];
+      enemy.setMaxHp(enemyProperties['health']);
+      enemy.setSize(Vector2.all(enemyProperties['size']));
+      // We would like to set the sprite here, but we need to load it first so we're not doing it for now.
+      enemy.initializeEnemy();
       enemy.reset();
       game.add(enemy);
     }

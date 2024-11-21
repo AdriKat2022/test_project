@@ -15,8 +15,6 @@ class Explosion extends SpriteAnimationComponent with HasGameReference<SpaceShoo
   Future<void> onLoad() async {
     await super.onLoad();
 
-    print("effective position: $position");
-
     animation = await game.loadSpriteAnimation(
       'effects/explosion.png',
       SpriteAnimationData.sequenced(

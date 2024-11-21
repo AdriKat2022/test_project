@@ -1,11 +1,14 @@
+import 'dart:math';
 import 'package:flame/components.dart';
 
 /// Define here a move strategy class that will be used to move the component (an enemy for instance).
-abstract class MoveStrategy extends PositionComponent {
+abstract class MoveStrategy {
 
   /// Moves the component according to the current time.
-  void move(double time) {
-    position += v(time);
+  Vector2 move(double time) {
+    final moveStep = v(time);
+    // print(moveStep);
+    return moveStep;
   }
 
   /// Returns the current velocity of the component at the given time.
@@ -42,7 +45,7 @@ class ZigZagMoveStrategy extends MoveStrategy {
 
   @override
   Vector2 v(time) {
-    return velocity + Vector2(amplitude * (time * frequency).sin(), 0);
+    return velocity + Vector2(amplitude * (sin(time * frequency) > 0 ? -1 : 1), 0);
   }
 }
 

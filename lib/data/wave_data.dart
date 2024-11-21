@@ -35,34 +35,39 @@ class EnemyTypes {
 
   // Each type of enemy has their own properties (e.g., health, speed, etc.).
   /// Returns the properties of the selected enemy type (it use the static variables of this class).
+  /// There is health, speed, sprite, and move_strategy.
   static Map<String, dynamic> getProperties(String type) {
     switch (type) {
       case basic:
         return {
-          'health': 20,
+          'health': 10,
           'speed': 100,
-          'sprite': 'ships/enemy.png',
+          'sprite': 'basic', // TODO: Change this to the correct sprite.
+          'size': 1,
           'move_strategy': LinearMoveStrategy(Vector2(0, 1)),
         };
       case zigzag:
         return {
-          'health': 30,
-          'speed': 150,
-          'sprite': 'ships/enemy.png',
-          'move_strategy': LinearMoveStrategy(Vector2(0, 1)),
+          'health': 10,
+          'speed': 100,
+          'sprite': 'zigzag', // TODO: Change this to the correct sprite.
+          'size': 1,
+          'move_strategy': ZigZagMoveStrategy(1, 5, Vector2(0, 1)),
         };
       case tank:
         return {
           'health': 30,
-          'speed': 50,
-          'sprite': 'ships/enemy.png',
+          'speed': 100,
+          'sprite': 'tank', // TODO: Change this to the correct sprite.
+          'size': 2,
           'move_strategy': LinearMoveStrategy(Vector2(0, 1)),
         };
       case boss:
         return {
           'health': 100,
           'speed': 50,
-          'sprite': 'ships/enemy.png',
+          'sprite': 'boss', // TODO: Change this to the correct sprite.
+          'size': 3,
           'move_strategy': LinearMoveStrategy(Vector2(0, 1)),
         };
       default:

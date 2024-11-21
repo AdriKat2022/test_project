@@ -10,9 +10,9 @@ class Bullet extends SpriteAnimationComponent with HasGameReference<SpaceShooter
   int baseDamage = 10;
 
   Bullet({
-    super.position
+    super.position,
   }) : super(
-      size: Vector2(25,50),
+      size: Vector2.all(16),
       anchor: Anchor.center,
     );
   

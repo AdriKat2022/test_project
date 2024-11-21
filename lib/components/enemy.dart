@@ -4,21 +4,26 @@ import 'package:flame/components.dart';
 import 'package:flutter/animation.dart';
 import 'package:test_project/components/bullet.dart';
 import 'package:test_project/components/damageable_component.dart';
+import 'package:test_project/data/move_strategies.dart';
 import 'package:test_project/effects/explosion.dart';
 import 'package:test_project/space_shooter_game.dart';
 import 'package:test_project/utils/poolable_object.dart';
 
 class Enemy extends SpriteAnimationComponent with HasGameReference<SpaceShooterGame>, CollisionCallbacks, DamageableComponent implements PoolableObject {
 
-  static const enemySize = 50.0;
-  static const enemyBaseSpeed = 100;
+  static const enemyBaseSize = 40.0;
+  static const enemyBaseSpeedMultiplier = 1.0;
 
+  late MoveStrategy moveStrategy;
+  late double speed;
+
+  double timer = 0;
   bool isDead = false;
 
   Enemy({
-      super.position, int health = 0
+      super.position, moveStrategy, int health = 0
     }) : super(
-            size: Vector2.all(enemySize),
+            size: Vector2.all(enemyBaseSize),
             anchor: Anchor.center,
           )
   {
@@ -27,49 +32,47 @@ class Enemy extends SpriteAnimationComponent with HasGameReference<SpaceShooterG
     }
   }
 
-  // void setSprite(String spritePath) async {
-  //   // Load Animation
-  //   animation = await game.loadSpriteAnimation(
-  //     spritePath,
-  //     SpriteAnimationData.sequenced(
-  //       amount: 2,
-  //       stepTime: .4,
-  //       textureSize: Vector2(7,6),
-  //     ),
-  //   );
-  // }
+  void setSprite(String spriteKey) {
+    // Load Animation from the animation manager cache.
+    print('Loading sprite: $spriteKey');
+    animation = game.animationManagerCache.getSpriteAnimation(spriteKey);
+  }
   
   @override
   Future<void> onLoad() async {
     await super.onLoad();
-
-    add(RectangleHitbox());
-
     animation = await game.loadSpriteAnimation(
-      'ships/enemy.png',
-      SpriteAnimationData.sequenced(
-        amount: 2,
-        stepTime: .4,
-        textureSize: Vector2(7,6),
-      ),
+      'ships/enemy_basic.png',
+      SpriteAnimationData.sequenced(amount: 2, stepTime: 0.4, textureSize: Vector2(7, 6)),
     );
+    add(RectangleHitbox());
   }
 
   @override
   void update(double dt) {
     if (isPooled) return;
     super.update(dt);
-
     if (isDead) return;
 
-    position.y += dt * enemyBaseSpeed;
+    position += moveStrategy.move(timer) * speed * enemyBaseSpeedMultiplier * dt;
 
     if (position.y > game.size.y) {
       disable();
     }
+
+    timer += dt;
+  }
+
+  void setSize(Vector2 newSize){
+    size.setFrom(newSize * enemyBaseSize);
+  }
+
+  void setMoveStrategy(MoveStrategy moveStrategy){
+    this.moveStrategy = moveStrategy;
   }
 
   void initializeEnemy(){
+    timer = 0;
     scale = Vector2.all(1);
     isDead = false;
   }
@@ -80,7 +83,6 @@ class Enemy extends SpriteAnimationComponent with HasGameReference<SpaceShooterG
 
     // TODO: Add score and a sound.
     game.add(Explosion(position: position));
-    print("explosion at " + position.toString());
     this.add(ScaleEffect.by(
       Vector2.all(0.001),
       EffectController(duration: 0.35, curve: Curves.easeOutExpo),
@@ -102,7 +104,6 @@ class Enemy extends SpriteAnimationComponent with HasGameReference<SpaceShooterG
     // We're checking for bullets but we could also check for a interface for diversity (like DamageableBody).
     if (other is Bullet){
       if(takeDamage(other.getDamage())){
-        print("Enemy is dead");
         death();
       }
       other.deleteBullet();
