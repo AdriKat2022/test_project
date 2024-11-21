@@ -35,7 +35,6 @@ class Enemy extends SpriteAnimationComponent with HasGameReference<SpaceShooterG
   void setSprite(String spriteKey) {
     // Load Animation from the animation manager cache.
     print('Loading sprite: $spriteKey');
-    animation = game.animationManagerCache.getSpriteAnimation(spriteKey);
   }
   
   @override

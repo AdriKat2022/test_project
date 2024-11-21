@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:test_project/components/enemy.dart';
 import 'package:test_project/components/wave.dart';
 import 'package:test_project/components/player.dart';
-import 'package:test_project/data/animations_manager.dart';
 import 'package:test_project/data/wave_data.dart';
 import 'package:test_project/ui/button.dart';
 import 'package:test_project/utils/object_pool.dart';
@@ -14,8 +13,6 @@ import 'package:test_project/utils/object_pool.dart';
 class SpaceShooterGame extends FlameGame with PanDetector, HasCollisionDetection {
 
   static const int playerMaxHp = 100;
-
-  final AnimationManager animationManagerCache = AnimationManager();
 
   late Player player;
 
