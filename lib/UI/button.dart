@@ -29,6 +29,7 @@ class ButtonComponent extends SpriteComponent with TapCallbacks, HoverCallbacks 
   Future<void> onLoad() async {
     await super.onLoad();
     sprite = normalSprite;
+    priority = 10;
   }
 
   @override

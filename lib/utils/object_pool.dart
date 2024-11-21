@@ -1,3 +1,4 @@
+import 'package:flame/components.dart';
 import 'package:test_project/utils/poolable_object.dart';
 
 /// Objects are not removed from the pool, they are just marked as available or not.
@@ -43,5 +44,15 @@ class ObjectPool<T extends PoolableObject>{
       object.pool();
       print(T.toString() + " re-pooled!");
     }
+  }
+
+  void emptyPool(){
+    for (final object in pool){
+      if (object is Component){
+        final component = object as Component;
+        component.removeFromParent();
+      }
+    }
+    pool.clear();
   }
 }

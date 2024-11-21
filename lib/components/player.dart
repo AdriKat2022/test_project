@@ -1,20 +1,24 @@
+import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:test_project/components/damageable_component.dart';
+import 'package:test_project/components/enemy.dart';
 import 'package:test_project/space_shooter_game.dart';
 import 'package:test_project/components/bullet.dart';
 import 'package:test_project/utils/object_pool.dart';
 
-class Player extends SpriteAnimationComponent with HasGameReference<SpaceShooterGame>, DamageableComponent {
+class Player extends SpriteAnimationComponent with HasGameReference<SpaceShooterGame>, CollisionCallbacks, DamageableComponent {
 
   int points = 0;
   
-  late final SpawnComponent _bulletSpawner;
-  late final ObjectPool<Bullet> _playerBulletPool;
+  late final SpawnComponent bulletSpawner;
+  late final ObjectPool<Bullet> playerBulletPool;
 
-  Player() : super(
-    size: Vector2(100, 150),
+  Player({int maxHP = 3}) : super(
+    size: Vector2(100, 150) * 0.8,
     anchor: Anchor.center,
-  );
+  ){
+    setMaxHp(maxHP);
+  }
 
   @override
   Future<void> onLoad() async {
@@ -32,21 +36,23 @@ class Player extends SpriteAnimationComponent with HasGameReference<SpaceShooter
       ),
     );
 
+    add(RectangleHitbox(collisionType: CollisionType.active));
+
     // TODO: Move the bullet pool and the bullet spawner to a separate class (weapon component).
 
     // Initialize BulletPool.
-    _playerBulletPool = ObjectPool<Bullet>(
+    playerBulletPool = ObjectPool<Bullet>(
       maxSize: 20,
       createObjectFunction: () => Bullet(),
     );
 
     // Initialize Bullet Spawner using the ObjectPool.
-    _bulletSpawner = SpawnComponent(
+    bulletSpawner = SpawnComponent(
       period: .2,
       selfPositioning: true,
       factory: (index) {
 
-        final bullet = _playerBulletPool.get();
+        final bullet = playerBulletPool.get();
 
         if (bullet != null){
           bullet.position = position + Vector2(0, -height/2);
@@ -57,18 +63,62 @@ class Player extends SpriteAnimationComponent with HasGameReference<SpaceShooter
       autoStart: false,
     );
 
-    game.add(_bulletSpawner);
+    game.add(bulletSpawner);
   }
 
   void move(Vector2 delta){
+    if (isHpZeroOrBelow()) return;
     position.add(delta);
   }
 
   void startShooting(){
-    _bulletSpawner.timer.start();
+    if (isHpZeroOrBelow()) return;
+    bulletSpawner.timer.start();
   }
 
   void stopShooting(){
-    _bulletSpawner.timer.stop();
+    if (isHpZeroOrBelow()) return;
+    bulletSpawner.timer.stop();
+  }
+
+  void addScore(int score){
+    points += score;
+    game.gameUI.scoreComponent.updateScore(points);
+  }
+
+  void disablePlayer(){
+    bulletSpawner.timer.stop();
+    removeFromParent();
+  }
+
+  void reset(){
+    fullHeal();
+    game.gameUI.heartsBar.updateLives(hp);
+    game.gameUI.scoreComponent.updateScore(0);
+    points = 0;
+    position = game.size/2;
+    playerBulletPool.emptyPool();
+    removeFromParent();
+    game.add(this);
+  }
+
+  void damagePlayer(){
+    takeDamage(1);
+    if (isHpZeroOrBelow()){
+      disablePlayer();
+    }
+    game.gameUI.heartsBar.updateLives(hp);
+    // TODO: Make an effect for the player when taking damage.
+  }
+
+  @override
+  void onCollisionStart(Set<Vector2> intersectionPoints, PositionComponent other) {
+    if (isHpZeroOrBelow()) return;
+    super.onCollisionStart(intersectionPoints, other);
+    if (other is Enemy){
+      print("player took damage");
+      other.death(false);
+      damagePlayer();
+    }
   }
 }

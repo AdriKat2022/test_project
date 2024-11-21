@@ -3,18 +3,21 @@ import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flame/parallax.dart';
 import 'package:flutter/material.dart';
+import 'package:test_project/UI/game_ui.dart';
 import 'package:test_project/components/enemy.dart';
 import 'package:test_project/components/wave.dart';
 import 'package:test_project/components/player.dart';
 import 'package:test_project/data/wave_data.dart';
-import 'package:test_project/ui/button.dart';
 import 'package:test_project/utils/object_pool.dart';
 
 class SpaceShooterGame extends FlameGame with PanDetector, HasCollisionDetection {
 
-  static const int playerMaxHp = 100;
+  static const int playerMaxHp = 4;
 
-  late Player player;
+  late final Player player;
+  late final WaveManager gameWave;
+  late final ObjectPool<Enemy> enemyPool;
+  late final GameUI gameUI;
 
   @override
   Future<void> onLoad() async {
@@ -32,17 +35,17 @@ class SpaceShooterGame extends FlameGame with PanDetector, HasCollisionDetection
     );
     add(parallax);
 
-    player = Player();
+    player = Player(maxHP: playerMaxHp);
     add(player);
 
     // Create the enemy pool (could be moved into a LEVEL class).
-    final enemyPool = ObjectPool<Enemy>(
+    enemyPool = ObjectPool<Enemy>(
       maxSize: 50,
       createObjectFunction: () => Enemy(health: 20),
     );
 
     // Add the waves. TODO: Move this to a seperate class for cleaner code.
-    add(Wave(enemyPool: enemyPool, waveDataList: [
+    gameWave = WaveManager(enemyPool: enemyPool, waveDataList: [
       WaveData(
         enemies: [
           // 3 enemies in line.
@@ -77,26 +80,19 @@ class SpaceShooterGame extends FlameGame with PanDetector, HasCollisionDetection
         ],
         prewaveDelay: 10,
       ),
-    ]));
+    ]);
+    add(gameWave);
 
-    // Add the restart button.
-    add(
-      ButtonComponent(
-        text: 'Restart',
-        onPressed: () {
-          print("yay! Restart callback works");
-        },
-        normalSprite: await Sprite.load('ui/return_btn.png'),
-        hoverSprite: await Sprite.load('ui/return_btn_hover.png'),
-        pressedSprite: await Sprite.load('ui/return_btn_pressed.png'),
-        position: Vector2(100, 100),
-        size: Vector2.all(50)
-      ),
-    );
+    // Add the UI
+    gameUI = GameUI(restartGameFunction: () => resetGame());
+    add(gameUI);
   }
 
   void resetGame(){
-    player.setMaxHp(playerMaxHp);
+    print("yay! Restart callback works");
+    player.reset();
+    gameWave.reset();
+    enemyPool.emptyPool();
   }
 
   @override

@@ -14,6 +14,7 @@ class Enemy extends SpriteAnimationComponent with HasGameReference<SpaceShooterG
   static const enemyBaseSize = 40.0;
   static const enemyBaseSpeedMultiplier = 1.0;
 
+  // Those properties are defined at spawning time (That's why they are late).
   late MoveStrategy moveStrategy;
   late double speed;
 
@@ -76,9 +77,15 @@ class Enemy extends SpriteAnimationComponent with HasGameReference<SpaceShooterG
     isDead = false;
   }
 
-  void death(){
+  /// Called on the enemy death if caused by a non-natural mean (most likely by the player).
+  /// [rewardPlayer] indicates if the player should be rewarded for the kill.
+  void death(bool rewardPlayer){
     if (isDead) return;
     isDead = true;
+
+    if (rewardPlayer){
+      game.player.addScore(10);
+    }
 
     // TODO: Add score and a sound.
     game.add(Explosion(position: position));
@@ -103,7 +110,7 @@ class Enemy extends SpriteAnimationComponent with HasGameReference<SpaceShooterG
     // We're checking for bullets but we could also check for a interface for diversity (like DamageableBody).
     if (other is Bullet){
       if(takeDamage(other.getDamage())){
-        death();
+        death(true);
       }
       other.deleteBullet();
     }
