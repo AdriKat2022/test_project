@@ -4,12 +4,13 @@ import 'package:test_project/space_shooter_game.dart';
 import 'package:test_project/components/bullet.dart';
 import 'package:test_project/utils/object_pool.dart';
 
-class Player extends SpriteAnimationComponent with HasGameReference<SpaceShooterGame> {
+class Player extends SpriteAnimationComponent with HasGameReference<SpaceShooterGame>, DamageableComponent {
 
-  final DamageableComponent damageableComponent = DamageableComponent(100);
+  int points = 0;
+  
   late final SpawnComponent _bulletSpawner;
   late final ObjectPool<Bullet> _playerBulletPool;
-  
+
   Player() : super(
     size: Vector2(100, 150),
     anchor: Anchor.center,

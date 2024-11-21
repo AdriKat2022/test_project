@@ -1,19 +1,17 @@
 import 'package:flame/collisions.dart';
+import 'package:flame/effects.dart';
+import 'package:flame/components.dart';
 import 'package:flutter/animation.dart';
 import 'package:test_project/components/bullet.dart';
 import 'package:test_project/components/damageable_component.dart';
 import 'package:test_project/effects/explosion.dart';
 import 'package:test_project/space_shooter_game.dart';
-import 'package:flame/effects.dart';
-import 'package:flame/components.dart';
 import 'package:test_project/utils/poolable_object.dart';
 
-class Enemy extends SpriteAnimationComponent with HasGameReference<SpaceShooterGame>, CollisionCallbacks implements PoolableObject {
+class Enemy extends SpriteAnimationComponent with HasGameReference<SpaceShooterGame>, CollisionCallbacks, DamageableComponent implements PoolableObject {
 
   static const enemySize = 50.0;
   static const enemyBaseSpeed = 100;
-
-  final DamageableComponent damageableComponent = DamageableComponent(0);
 
   bool isDead = false;
 
@@ -25,12 +23,8 @@ class Enemy extends SpriteAnimationComponent with HasGameReference<SpaceShooterG
           )
   {
     if (health > 0){
-      setHealth(health);
+      setMaxHp(health);
     }
-  }
-
-  void setHealth(int health){
-    damageableComponent.setMaxHp(health);
   }
 
   // void setSprite(String spritePath) async {
@@ -107,7 +101,7 @@ class Enemy extends SpriteAnimationComponent with HasGameReference<SpaceShooterG
     super.onCollisionStart(intersectionPoints, other);
     // We're checking for bullets but we could also check for a interface for diversity (like DamageableBody).
     if (other is Bullet){
-      if(damageableComponent.takeDamage(other.getDamage())){
+      if(takeDamage(other.getDamage())){
         print("Enemy is dead");
         death();
       }
