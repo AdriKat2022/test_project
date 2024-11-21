@@ -1,5 +1,6 @@
 import 'package:flame/game.dart';
 
+/// Contains all the enemies that will spawn in a wave, and the delay before the wave starts.
 class WaveData {
   final List<EnemyData> enemies;
   final double prewaveDelay;
@@ -11,9 +12,12 @@ class WaveData {
 }
 
 class EnemyData {
-  final String type; // Enemy type (e.g., "basic", "zigzag", etc.)
-  final Vector2 position; // Spawn position
-  final double delay; // Delay before spawning the NEXT enemy relative to this one (if this is the first enemy, it's the delay from the start of the wave)
+  /// Enemy type (e.g., "basic", "zigzag", etc.).
+  final String type; 
+  /// Spawn position of the enemy.
+  final Vector2 position;
+  /// Delay before spawning the NEXT enemy relative to this one. Ignored if this is the last enemy in the wave.
+  final double delay; 
 
   EnemyData({
     required this.type,
@@ -28,8 +32,8 @@ class EnemyTypes {
   static const String tank = 'tank';
   static const String boss = 'boss';
 
-  // Each type of enemy has their own properties (e.g., health, speed, etc.)
-
+  // Each type of enemy has their own properties (e.g., health, speed, etc.).
+  /// Returns the properties of the selected enemy type (it use the static variables of this class).
   static Map<String, dynamic> getProperties(String type) {
     switch (type) {
       case basic:

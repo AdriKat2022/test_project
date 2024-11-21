@@ -16,6 +16,8 @@ class SpaceShooterGame extends FlameGame with PanDetector, HasCollisionDetection
 
   @override
   Future<void> onLoad() async {
+
+    // Load the parallax background.
     final parallax = await loadParallaxComponent(
       [
         ParallaxImageData('backgrounds/background_placeholder.png'),
@@ -31,21 +33,21 @@ class SpaceShooterGame extends FlameGame with PanDetector, HasCollisionDetection
     player = Player();
     add(player);
 
-    // Create the enemy pool (could be moved into a LEVEL class)
+    // Create the enemy pool (could be moved into a LEVEL class).
     final enemyPool = ObjectPool<Enemy>(
       maxSize: 20,
       createObjectFunction: () => Enemy(health: 20),
     );
 
-    // Add the waves
+    // Add the waves.
     add(Wave(enemyPool: enemyPool, waveDataList: [
       WaveData(
         enemies: [
-          // 3 enemies in line
+          // 3 enemies in line.
           EnemyData(type: 'basic', position: Vector2(100, -50), delay: 0),
           EnemyData(type: 'basic', position: Vector2(200, -50), delay: 0),
           EnemyData(type: 'basic', position: Vector2(300, -50), delay: 2),
-          // 2 enemies in line
+          // 2 enemies in line.
           EnemyData(type: 'basic', position: Vector2(400, -50), delay: 0),
           EnemyData(type: 'basic', position: Vector2(500, -50), delay: 0),
           EnemyData(type: 'basic', position: Vector2(600, -50), delay: 0),
@@ -62,7 +64,7 @@ class SpaceShooterGame extends FlameGame with PanDetector, HasCollisionDetection
           EnemyData(type: 'basic', position: Vector2(500, -50), delay: 0.3),
           EnemyData(type: 'basic', position: Vector2(600, -50), delay: 0.3),
           EnemyData(type: 'basic', position: Vector2(700, -50), delay: 0.3),
-          // Other Line
+          // Other Line.
           EnemyData(type: 'basic', position: Vector2(700, -50), delay: 0.3),
           EnemyData(type: 'basic', position: Vector2(600, -50), delay: 0.3),
           EnemyData(type: 'basic', position: Vector2(500, -50), delay: 0.3),
@@ -75,7 +77,7 @@ class SpaceShooterGame extends FlameGame with PanDetector, HasCollisionDetection
       ),
     ]));
 
-    // Add the button test
+    // Add the button test.
     add(
       ButtonComponent(
         text: 'Restart',

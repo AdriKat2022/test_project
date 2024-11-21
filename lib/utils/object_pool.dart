@@ -1,7 +1,7 @@
 import 'package:test_project/utils/poolable_object.dart';
 
-// Objects are not removed from the pool, they are just marked as available or not.
-// The pool flag is located in the Object itself since it should be implementing a PoolableObject.
+/// Objects are not removed from the pool, they are just marked as available or not.
+/// The pool flag is located in the Object itself since it should be implementinh the PoolableObject interface.
 class ObjectPool<T extends PoolableObject>{
   final List<T> pool = [];
   final int maxSize;
@@ -9,10 +9,10 @@ class ObjectPool<T extends PoolableObject>{
 
   ObjectPool({required this.maxSize, required this.createObjectFunction});
 
-  // Get an object from the pool (or create one)
-  T? getObject(){
+  /// Get an object from the pool (or create one).
+  T? get(){
 
-    // Search for an available object in the pool
+    // Search for an available object in the pool.
     for(var object in pool){
       if(object.isPooled){
         object.unpool();
@@ -22,7 +22,7 @@ class ObjectPool<T extends PoolableObject>{
       }
     }
 
-    // Create a new object if none is available
+    // Create a new object if none is available.
     if (pool.length < maxSize){
       final poolableObject = createObjectFunction();
       pool.add(poolableObject);
@@ -34,5 +34,14 @@ class ObjectPool<T extends PoolableObject>{
 
     print("Pool is all occupied!");
     return null;
+  }
+
+  /// Puts an object back into the pool.
+  /// Mostly unused in this project since objects sets their flag on their own instead of using this function.
+  void putBack(T object){
+    if (pool.contains(object)){
+      object.pool();
+      print(T.toString() + " re-pooled!");
+    }
   }
 }

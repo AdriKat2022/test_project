@@ -84,7 +84,7 @@ class Enemy extends SpriteAnimationComponent with HasGameReference<SpaceShooterG
     if (isDead) return;
     isDead = true;
 
-    // TODO: Add score and a sound
+    // TODO: Add score and a sound.
     game.add(Explosion(position: position));
     print("explosion at " + position.toString());
     this.add(ScaleEffect.by(
@@ -105,7 +105,7 @@ class Enemy extends SpriteAnimationComponent with HasGameReference<SpaceShooterG
   void onCollisionStart(Set<Vector2> intersectionPoints, PositionComponent other) {
     if (isDead) return;
     super.onCollisionStart(intersectionPoints, other);
-    // We're checking for bullets but we could also check for a interface for diversity (like DamageableBody)
+    // We're checking for bullets but we could also check for a interface for diversity (like DamageableBody).
     if (other is Bullet){
       if(damageableComponent.takeDamage(other.getDamage())){
         print("Enemy is dead");

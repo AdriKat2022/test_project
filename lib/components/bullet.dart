@@ -25,7 +25,6 @@ class Bullet extends SpriteAnimationComponent with HasGameReference<SpaceShooter
     animation = await game.loadSpriteAnimation(
       'bullets/player_bullet_sheet.png',
       SpriteAnimationData.sequenced(
-        // Sprites are vertically aligned and are 6 by 15 pixels
         amount: 4,
         stepTime: 0.05,
         textureSize: Vector2(6, 16),
@@ -64,7 +63,6 @@ class Bullet extends SpriteAnimationComponent with HasGameReference<SpaceShooter
   
   @override
   void reset() {
-    // TODO: implement reset
   }
   
   @override

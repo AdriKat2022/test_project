@@ -1,3 +1,4 @@
+/// Need to be implemented by objects that can be pooled (that needs to use ObjectPool<T>).
 abstract class PoolableObject {
   
   bool isPooled = false;

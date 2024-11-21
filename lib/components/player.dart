@@ -10,7 +10,6 @@ class Player extends SpriteAnimationComponent with HasGameReference<SpaceShooter
   late final SpawnComponent _bulletSpawner;
   late final ObjectPool<Bullet> _playerBulletPool;
   
-
   Player() : super(
     size: Vector2(100, 150),
     anchor: Anchor.center,
@@ -22,7 +21,7 @@ class Player extends SpriteAnimationComponent with HasGameReference<SpaceShooter
 
     position = game.size/2;
 
-    // Load Animation
+    // Load Animation.
     animation = await game.loadSpriteAnimation(
       'ships/player_sheet.png',
       SpriteAnimationData.sequenced(
@@ -32,21 +31,21 @@ class Player extends SpriteAnimationComponent with HasGameReference<SpaceShooter
       ),
     );
 
-    // TODO: Move the bullet pool and the bullet spawner to a separate class (weapon component)
+    // TODO: Move the bullet pool and the bullet spawner to a separate class (weapon component).
 
-    // Initialize BulletPool 
+    // Initialize BulletPool.
     _playerBulletPool = ObjectPool<Bullet>(
       maxSize: 20,
       createObjectFunction: () => Bullet(),
     );
 
-    // Initialize Bullet Spawner using the ObjectPool
+    // Initialize Bullet Spawner using the ObjectPool.
     _bulletSpawner = SpawnComponent(
       period: .2,
       selfPositioning: true,
       factory: (index) {
 
-        final bullet = _playerBulletPool.getObject();
+        final bullet = _playerBulletPool.get();
 
         if (bullet != null){
           bullet.position = position + Vector2(0, -height/2);
