@@ -1,4 +1,5 @@
 import 'package:flame/game.dart';
+import 'package:test_project/data/move_strategies.dart';
 
 /// Contains all the enemies that will spawn in a wave, and the delay before the wave starts.
 class WaveData {
@@ -40,25 +41,29 @@ class EnemyTypes {
         return {
           'health': 20,
           'speed': 100,
-          'sprite': 'ships/enemy.png'
+          'sprite': 'ships/enemy.png',
+          'move_strategy': LinearMoveStrategy(Vector2(0, 1)),
         };
       case zigzag:
         return {
           'health': 30,
           'speed': 150,
-          'sprite': 'ships/enemy.png'
+          'sprite': 'ships/enemy.png',
+          'move_strategy': LinearMoveStrategy(Vector2(0, 1)),
         };
       case tank:
         return {
           'health': 30,
           'speed': 50,
-          'sprite': 'ships/enemy.png'
+          'sprite': 'ships/enemy.png',
+          'move_strategy': LinearMoveStrategy(Vector2(0, 1)),
         };
       case boss:
         return {
           'health': 100,
           'speed': 50,
-          'sprite': 'ships/enemy.png'
+          'sprite': 'ships/enemy.png',
+          'move_strategy': LinearMoveStrategy(Vector2(0, 1)),
         };
       default:
         throw Exception('Unknown enemy type: $type');
