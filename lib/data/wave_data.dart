@@ -41,33 +41,33 @@ class EnemyTypes {
       case basic:
         return {
           'health': 10,
-          'speed': 100,
+          'speed': 100.0,
           'sprite': 'basic', // TODO: Change this to the correct sprite.
-          'size': 1,
+          'size': 1.0,
           'move_strategy': LinearMoveStrategy(Vector2(0, 1)),
         };
       case zigzag:
         return {
           'health': 10,
-          'speed': 100,
+          'speed': 100.0,
           'sprite': 'zigzag', // TODO: Change this to the correct sprite.
-          'size': 1,
+          'size': 1.0,
           'move_strategy': ZigZagMoveStrategy(1, 5, Vector2(0, 1)),
         };
       case tank:
         return {
           'health': 30,
-          'speed': 100,
+          'speed': 100.0,
           'sprite': 'tank', // TODO: Change this to the correct sprite.
-          'size': 2,
+          'size': 2.0,
           'move_strategy': LinearMoveStrategy(Vector2(0, 1)),
         };
       case boss:
         return {
           'health': 100,
-          'speed': 50,
+          'speed': 50.0,
           'sprite': 'boss', // TODO: Change this to the correct sprite.
-          'size': 3,
+          'size': 3.0,
           'move_strategy': LinearMoveStrategy(Vector2(0, 1)),
         };
       default:
