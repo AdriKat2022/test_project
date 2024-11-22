@@ -16,9 +16,10 @@ dependencies:
   equatable: ^2.0.5 # Optional, helps with state comparison in BLOC
 
 flutter:
+
   uses-material-design: true
+
   assets:
-    - assets/images/
     - assets/images/backgrounds/
     - assets/images/ships/
     - assets/images/bullets/
