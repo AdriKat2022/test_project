@@ -13,8 +13,8 @@ import 'package:test_project/utils/object_pool.dart';
 
 class Player extends SpriteAnimationComponent with HasGameReference<SpaceShooterGame>, CollisionCallbacks, DamageableComponent {
 
-  static const double bulletsPerSecond = 15;
-  static const double bulletsBaseDamage = 1;
+  static const double bulletsPerSecond = 4;
+  static const double bulletsBaseDamage = 5;
 
   int points = 0;
 

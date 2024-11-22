@@ -84,7 +84,7 @@ class WaveManager extends Component with HasGameReference<SpaceShooterGame> {
       final enemyProperties = EnemyTypes.getProperties(enemyData.type);
       enemy.position = enemyData.position;
       enemy.speed = enemyProperties['speed'];
-      enemy.moveStrategy = enemyProperties['move_strategy'];
+      enemy.setMoveStrategy(enemyProperties['move_strategy']);
       enemy.setMaxHp(enemyProperties['health']);
       enemy.setSize(Vector2.all(enemyProperties['size']));
       // We would like to set the sprite here, but we need to load it first so we're not doing it for now.

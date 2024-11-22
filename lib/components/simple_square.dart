@@ -5,13 +5,13 @@ import 'package:flame/components.dart';
 /// A simple square that can be customized with color and size
 class SimpleSquare extends PositionComponent {
 
-  Color color;
-  Paint cachedPaint = Paint();
+  Color _color;
+  Paint _cachedPaint = Paint();
 
   SimpleSquare({
     required Vector2 size,
-    this.color = const Color(0xFF0000FF),
-  }) {
+    Color color = const Color(0xFF0000FF),
+  }) : _color = color {
     this.size = size;
     anchor = Anchor.center;
   }
@@ -20,14 +20,14 @@ class SimpleSquare extends PositionComponent {
   void render(Canvas canvas) {
     super.render(canvas);
 
-    canvas.drawRect(size.toRect(), cachedPaint);
+    canvas.drawRect(size.toRect(), _cachedPaint);
   }
 
   void setColor(Color color) {
-    if (color == this.color) {
+    if (color == this._color) {
       return;
     }
-    this.color = color;
-    cachedPaint.color = color;
+    this._color = color;
+    _cachedPaint.color = color;
   }
 }
