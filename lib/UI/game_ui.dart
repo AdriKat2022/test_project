@@ -39,7 +39,7 @@ class GameUI extends Component with HasGameReference<SpaceShooterGame>{
     restartButton = ButtonComponent(
         text: 'Restart',
         onPressed: () {
-          LogDebug.printToHUD(game, "Restart reset!");
+          LogDebug.printToHUD(game, "Game reset!");
           restartGameFunction();
         },
         normalSprite: await Sprite.load('ui/buttons/return_btn.png'),

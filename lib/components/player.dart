@@ -13,6 +13,9 @@ import 'package:test_project/utils/object_pool.dart';
 
 class Player extends SpriteAnimationComponent with HasGameReference<SpaceShooterGame>, CollisionCallbacks, DamageableComponent {
 
+  static const double bulletsPerSecond = 5;
+  static const int bulletsBaseDamage = 5;
+
   int points = 0;
 
   late final SpawnComponent bulletSpawner;
@@ -52,13 +55,14 @@ class Player extends SpriteAnimationComponent with HasGameReference<SpaceShooter
 
     // Initialize Bullet Spawner using the ObjectPool.
     bulletSpawner = SpawnComponent(
-      period: .2,
+      period: 1/bulletsPerSecond,
       selfPositioning: true,
       factory: (index) {
         AudioManager.playSound('player_bullet');
         final bullet = playerBulletPool.get();
         if (bullet != null){
           bullet.position = position + Vector2(0, -height/2);
+          bullet.setDamage(bulletsBaseDamage);
           return bullet;
         }
         throw Exception("Pool is all occupied!");

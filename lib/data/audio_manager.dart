@@ -8,7 +8,7 @@ class AudioManager {
   static late final FlameGame game;
 
   static final musicFiles = <String, String>{
-    'main_theme': 'sounds/main_music.wav',
+    'main_theme': 'musics/main_music.wav',
   };
 
   static final soundFileNames = <String, String>{
@@ -24,7 +24,7 @@ class AudioManager {
 
   static var soundFilePools = <String, AudioPool>{};
 
-  static void playMusic(String music) {
+  static void playMusic(String music, {double volume = 0.5}) {
     final audioFile = musicFiles[music];
     if (audioFile == null) {
       LogDebug.printToHUD(game, 'Music $music not found!');
@@ -33,19 +33,19 @@ class AudioManager {
     }
     LogDebug.printToHUD(game, 'Playing music $music');
     FlameAudio.bgm.initialize();
-    FlameAudio.bgm.play(audioFile);
+    FlameAudio.bgm.play(audioFile, volume: volume);
   }
 
   static void stopMusic() {
     FlameAudio.bgm.stop();
   }
 
-  static void playSound(String soundName) {
+  static void playSound(String soundName, {double volume = 1.0}) {
     final audioPool = soundFilePools[soundName];
     if (audioPool == null) {
       throw ArgumentError('Sound $soundName not found!');
     }
-    audioPool.start();
+    audioPool.start(volume: volume);
   }
 
   static void initialize() async {

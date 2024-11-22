@@ -4,6 +4,7 @@ import 'package:flame/components.dart';
 import 'package:flutter/animation.dart';
 import 'package:test_project/components/bullet.dart';
 import 'package:test_project/components/damageable_component.dart';
+import 'package:test_project/data/audio_manager.dart';
 import 'package:test_project/data/move_strategies.dart';
 import 'package:test_project/effects/explosion.dart';
 import 'package:test_project/effects/sprite_color_flash.dart';
@@ -18,6 +19,7 @@ class Enemy extends SpriteAnimationComponent with HasGameReference<SpaceShooterG
   // Those properties are defined at spawning time (That's why they are late).
   late MoveStrategy moveStrategy;
   late double speed;
+  late int score;
   late SpriteColorFlash spriteColorFlash;
 
   double timer = 0;
@@ -90,7 +92,6 @@ class Enemy extends SpriteAnimationComponent with HasGameReference<SpaceShooterG
       game.player.addScore(10);
     }
 
-    // TODO: Add score and a sound.
     game.add(Explosion(position: position));
     this.add(ScaleEffect.by(
       Vector2.all(0.001),
@@ -111,6 +112,7 @@ class Enemy extends SpriteAnimationComponent with HasGameReference<SpaceShooterG
       death(true);
     }
     else {
+      AudioManager.playSound('enemy_hurt');
       spriteColorFlash.activate();
     }
   }

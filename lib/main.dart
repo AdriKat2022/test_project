@@ -76,7 +76,7 @@ class SpaceShooterGame extends FlameGame with PanDetector, HasCollisionDetection
   }
 
   void resetGame(){
-    print("yay! Restart callback works");
+    gameIsOver = false;
     player.reset();
     gameWave.reset();
     enemyPool.emptyPool();
