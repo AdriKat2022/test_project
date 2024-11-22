@@ -22,8 +22,8 @@ flutter:
     - assets/images/ships/
     - assets/images/bullets/
     - assets/images/effects/
-    - assets/images/UI/
-    - assets/images/UI/buttons/
+    - assets/images/ui/
+    - assets/images/ui/buttons/
     - assets/audio/sounds/
     - assets/audio/musics/
 
