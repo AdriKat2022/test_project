@@ -7,6 +7,7 @@ import 'package:test_project/UI/score_component.dart';
 import 'package:test_project/data/font_palette.dart';
 import 'package:test_project/effects/fade_out_text_notification.dart';
 import 'package:test_project/space_shooter_game.dart';
+import 'package:test_project/utils/log_debug.dart';
 
 class GameUI extends Component with HasGameReference<SpaceShooterGame>{
 
@@ -38,6 +39,7 @@ class GameUI extends Component with HasGameReference<SpaceShooterGame>{
     restartButton = ButtonComponent(
         text: 'Restart',
         onPressed: () {
+          LogDebug.printToHUD(game, "Restart reset!");
           restartGameFunction();
         },
         normalSprite: await Sprite.load('ui/buttons/return_btn.png'),

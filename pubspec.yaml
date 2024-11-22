@@ -23,6 +23,9 @@ flutter:
     - assets/images/effects/
     - assets/images/UI/
     - assets/images/UI/buttons/
+    - assets/audio/sounds/
+    - assets/audio/musics/
+
   fonts:
     - family: GoodTiming
       fonts:

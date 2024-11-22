@@ -7,6 +7,7 @@ import 'package:test_project/UI/game_ui.dart';
 import 'package:test_project/components/enemy.dart';
 import 'package:test_project/components/wave.dart';
 import 'package:test_project/components/player.dart';
+import 'package:test_project/data/audio_manager.dart';
 import 'package:test_project/data/waves_data_container.dart';
 import 'package:test_project/utils/log_debug.dart';
 import 'package:test_project/utils/object_pool.dart';
@@ -24,6 +25,8 @@ class SpaceShooterGame extends FlameGame with PanDetector, HasCollisionDetection
 
   @override
   Future<void> onLoad() async {
+
+    AudioManager.loadSounds();
 
     // Load the parallax background.
     final parallax = await loadParallaxComponent(
