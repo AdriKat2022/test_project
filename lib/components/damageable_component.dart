@@ -20,15 +20,12 @@ mixin class DamageableComponent {
   bool takeDamage(double damage) {
     hp -= damage;
     if (hp < 0) hp = 0;
-    // TODO: Add a sound effect + visual effect.
-
     return isHpZeroOrBelow();
   }
 
   void heal(int healAmount) {
     hp += healAmount;
     if (hp > maxHp) hp = maxHp;
-    // TODO: Add a sound effect + visual effect.
   }
 
   bool isHpZeroOrBelow() {
