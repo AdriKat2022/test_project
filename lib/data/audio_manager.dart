@@ -1,4 +1,5 @@
 import 'package:flame/game.dart';
+import 'package:flame_audio/audio_pool.dart';
 import 'package:flame_audio/flame_audio.dart';
 import 'package:test_project/utils/log_debug.dart';
 
@@ -10,16 +11,18 @@ class AudioManager {
     'main_theme': 'sounds/main_music.wav',
   };
 
-  static final soundFiles = <String, String>{
-    'click': 'sounds/click.wav',
-    'explosion': 'sounds/explosion.wav',
-    'player_bullet': 'sounds/player_bullet.wav',
-    // 'player_hurt': 'sounds/player_hurt.wav',
-    'enemy_hurt': 'sounds/enemy_hurt.wav',
-    // 'score': 'sounds/score.wav',
-    // 'game_over': 'sounds/game_over.wav',
-    // 'game_win': 'sounds/game_win.wav',
+  static final soundFileNames = <String, String>{
+    'sounds/click.wav': 'click',
+    'sounds/explosion.wav': 'explosion',
+    'sounds/player_bullet.wav': 'player_bullet',
+    'sounds/enemy_hurt.wav': 'enemy_hurt',
+    // 'sounds/player_hurt.wav': 'player_hurt',
+    // 'sounds/score.wav': 'score',
+    // 'sounds/game_over.wav': 'game_over',
+    // 'sounds/game_win.wav': 'game_win',
   };
+
+  static var soundFilePools = <String, AudioPool>{};
 
   static void playMusic(String music) {
     final audioFile = musicFiles[music];
@@ -37,17 +40,21 @@ class AudioManager {
     FlameAudio.bgm.stop();
   }
 
-  static void playSound(String sound) {
-    final audioFile = soundFiles[sound];
-    if (audioFile == null) {
-      throw ArgumentError('Sound $sound not found!');
+  static void playSound(String soundName) {
+    final audioPool = soundFilePools[soundName];
+    if (audioPool == null) {
+      throw ArgumentError('Sound $soundName not found!');
     }
-    FlameAudio.play(audioFile);
+    audioPool.start();
   }
 
   static void initialize() async {
-    await FlameAudio.audioCache.loadAll([
-      ...soundFiles.values
-    ]);
+    for (final soundFile in soundFileNames.keys) {
+      final name = soundFileNames[soundFile];
+      if (name == null) {
+        throw ArgumentError("Name of sound '$soundFile' not found!");
+      }
+      soundFilePools[name] = await FlameAudio.createPool(soundFile, minPlayers: 1, maxPlayers: 2);
+    }
   }
 }
