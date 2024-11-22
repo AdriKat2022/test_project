@@ -8,7 +8,7 @@ class LogDebug {
   static final indexHudMessages = <int, TextComponent>{};
 
 
-  static final interval = 15;
+  static final interval = 50;
   static final minY = 200;
   static final maxY = 800;
   static final xZeroKeyPosition = 50;
@@ -45,6 +45,9 @@ class LogDebug {
         else {
           // Find a free position to display the message using the lastYKeyPosition.
           lastYKeyPosition += interval;
+          if (lastYKeyPosition > maxY){
+            lastYKeyPosition = minY;
+          }
           final text = TextComponent(text: message, position: Vector2(xKeyPosition.toDouble(), lastYKeyPosition.toDouble()));
           text.add(OpacityEffect.fadeOut(EffectController(duration: duration)));
           game.add(text);
@@ -53,6 +56,10 @@ class LogDebug {
       }
       else {
         final text = TextComponent(text: message, position: Vector2(xZeroKeyPosition.toDouble(), lastYZeroKeyPosition.toDouble()));
+        lastYZeroKeyPosition += interval;
+        if (lastYZeroKeyPosition > maxY){
+          lastYZeroKeyPosition = minY;
+        }
         text.add(RemoveEffect(delay: duration));
         game.add(text);
       }

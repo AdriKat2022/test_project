@@ -1,8 +1,10 @@
 
 import 'package:flame/components.dart';
 import 'package:test_project/UI/button.dart';
+import 'package:test_project/UI/color_selector.dart';
 import 'package:test_project/UI/hearts_bar.dart';
 import 'package:test_project/UI/score_component.dart';
+import 'package:test_project/data/font_palette.dart';
 import 'package:test_project/effects/fade_out_text_notification.dart';
 import 'package:test_project/space_shooter_game.dart';
 
@@ -11,6 +13,8 @@ class GameUI extends Component with HasGameReference<SpaceShooterGame>{
   final Function restartGameFunction;
   final HeartsBarComponent heartsBar = HeartsBarComponent(lives: SpaceShooterGame.playerMaxHp);
   final ScoreComponent scoreComponent = ScoreComponent();
+
+  late final ColorSelector colorSelector;
   late final ButtonComponent restartButton;
 
   GameUI({required this.restartGameFunction});
@@ -45,6 +49,19 @@ class GameUI extends Component with HasGameReference<SpaceShooterGame>{
     restartButton.anchor = Anchor.bottomCenter;
     add(restartButton);
 
+    colorSelector = (ColorSelector(
+      colors: FontPalette.shipAvailableColors,
+      componentsSize: 50,
+      spacing: 10,
+      onColorSelected: (color) {
+        // LogDebug.printToHUD(game, "Color selected: $color");
+        game.player.selectTintColor(color);
+      }
+    ));
+    colorSelector.position = Vector2(game.size.x - 150, game.size.y - 100);
+    colorSelector.anchor = Anchor.bottomRight;
+    add(colorSelector);
+
     priority = 10;
   }
 
@@ -54,5 +71,6 @@ class GameUI extends Component with HasGameReference<SpaceShooterGame>{
     heartsBar.position = Vector2(50, 50);
     scoreComponent.position = Vector2(gameSize.x - 50, 50);
     restartButton.position = Vector2(gameSize.x/2 , gameSize.y - 50);
+    colorSelector.position = Vector2(gameSize.x - 150, gameSize.y - 50);
   }
 }

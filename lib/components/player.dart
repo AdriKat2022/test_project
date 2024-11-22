@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
+import 'package:flame/rendering.dart';
 import 'package:test_project/components/damageable_component.dart';
 import 'package:test_project/components/enemy.dart';
 import 'package:test_project/effects/sprite_color_flash.dart';
@@ -12,7 +13,7 @@ import 'package:test_project/utils/object_pool.dart';
 class Player extends SpriteAnimationComponent with HasGameReference<SpaceShooterGame>, CollisionCallbacks, DamageableComponent {
 
   int points = 0;
-  
+
   late final SpawnComponent bulletSpawner;
   late final ObjectPool<Bullet> playerBulletPool;
   late final SpriteColorFlash spriteColorFlash;
@@ -27,9 +28,7 @@ class Player extends SpriteAnimationComponent with HasGameReference<SpaceShooter
   @override
   Future<void> onLoad() async {
     await super.onLoad();
-
     position = game.size/2;
-
     spriteColorFlash = SpriteColorFlash(this, 0, 0.1, 0.5, Color(0xFFFF0000));
 
     // Load Animation.
@@ -41,11 +40,9 @@ class Player extends SpriteAnimationComponent with HasGameReference<SpaceShooter
         textureSize: Vector2(32, 48),
       ),
     );
-
     add(RectangleHitbox(collisionType: CollisionType.active));
 
     // TODO: Move the bullet pool and the bullet spawner to a separate class (weapon component).
-
     // Initialize BulletPool.
     playerBulletPool = ObjectPool<Bullet>(
       maxSize: 20,
@@ -59,7 +56,6 @@ class Player extends SpriteAnimationComponent with HasGameReference<SpaceShooter
       factory: (index) {
 
         final bullet = playerBulletPool.get();
-
         if (bullet != null){
           bullet.position = position + Vector2(0, -height/2);
           return bullet;
@@ -70,6 +66,11 @@ class Player extends SpriteAnimationComponent with HasGameReference<SpaceShooter
     );
 
     game.add(bulletSpawner);
+  }
+
+  void selectTintColor(Color color){
+    decorator.removeLast();
+    decorator.addLast(PaintDecorator.tint(color));
   }
 
   void move(Vector2 delta){
@@ -95,6 +96,7 @@ class Player extends SpriteAnimationComponent with HasGameReference<SpaceShooter
   void disablePlayer(){
     bulletSpawner.timer.stop();
     removeFromParent();
+    game.gameOver();
   }
 
   void reset(){

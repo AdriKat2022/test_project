@@ -31,7 +31,10 @@ class WaveManager extends Component with HasGameReference<SpaceShooterGame> {
       timeSinceWaveStarted = 0;
     }
 
-    if (currentWaveIndex >= waveDataList.length) return; // No more waves.
+    if (currentWaveIndex >= waveDataList.length){
+      game.gameWin();
+      return; // No more waves.
+    }
 
     final currentWave = waveDataList[currentWaveIndex];
 

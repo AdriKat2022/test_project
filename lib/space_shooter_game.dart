@@ -20,6 +20,8 @@ class SpaceShooterGame extends FlameGame with PanDetector, HasCollisionDetection
   late final ObjectPool<Enemy> enemyPool;
   late final GameUI gameUI;
 
+  bool gameIsOver = false;
+
   @override
   Future<void> onLoad() async {
 
@@ -53,6 +55,18 @@ class SpaceShooterGame extends FlameGame with PanDetector, HasCollisionDetection
     gameUI = GameUI(restartGameFunction: () => resetGame());
     add(gameUI);
     LogDebug.printToHUD(this, "Game loaded!");
+  }
+
+  void gameOver(){
+    if (gameIsOver) return;
+    gameIsOver = true;
+    LogDebug.printToHUD(this, "Game Over!");
+  }
+
+  void gameWin(){
+    if (gameIsOver) return;
+    gameIsOver = true;
+    LogDebug.printToHUD(this, "You Win!");
   }
 
   void resetGame(){
