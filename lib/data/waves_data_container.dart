@@ -79,7 +79,7 @@ class WavesDataContainer {
         EnemyData(type: EnemyTypes.basic, position: Vector2(100, -50), delay: 0.5),
         EnemyData(type: EnemyTypes.basic, position: Vector2(300, -50), delay: 0.5),
         EnemyData(type: EnemyTypes.basic, position: Vector2(400, -50), delay: 0.5),
-        EnemyData(type: EnemyTypes.basic, position: Vector2(500, -50), delay: 0),
+        EnemyData(type: EnemyTypes.basic, position: Vector2(500, -50), delay: 8),
       ],
       prewaveDelay: 10,
     ),
