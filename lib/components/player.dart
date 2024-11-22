@@ -1,7 +1,10 @@
+import 'dart:ui';
+
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:test_project/components/damageable_component.dart';
 import 'package:test_project/components/enemy.dart';
+import 'package:test_project/effects/sprite_color_flash.dart';
 import 'package:test_project/space_shooter_game.dart';
 import 'package:test_project/components/bullet.dart';
 import 'package:test_project/utils/object_pool.dart';
@@ -12,6 +15,7 @@ class Player extends SpriteAnimationComponent with HasGameReference<SpaceShooter
   
   late final SpawnComponent bulletSpawner;
   late final ObjectPool<Bullet> playerBulletPool;
+  late final SpriteColorFlash spriteColorFlash;
 
   Player({int maxHP = 3}) : super(
     size: Vector2(100, 150) * 0.8,
@@ -25,6 +29,8 @@ class Player extends SpriteAnimationComponent with HasGameReference<SpaceShooter
     await super.onLoad();
 
     position = game.size/2;
+
+    spriteColorFlash = SpriteColorFlash(this, 0, 0.1, 0.5, Color(0xFFFF0000));
 
     // Load Animation.
     animation = await game.loadSpriteAnimation(
@@ -103,6 +109,7 @@ class Player extends SpriteAnimationComponent with HasGameReference<SpaceShooter
   }
 
   void damagePlayer(){
+    spriteColorFlash.activate();
     takeDamage(1);
     if (isHpZeroOrBelow()){
       disablePlayer();
