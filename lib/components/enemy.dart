@@ -7,7 +7,7 @@ import 'package:test_project/components/damageable_component.dart';
 import 'package:test_project/data/move_strategies.dart';
 import 'package:test_project/effects/explosion.dart';
 import 'package:test_project/effects/sprite_color_flash.dart';
-import 'package:test_project/space_shooter_game.dart';
+import 'package:test_project/main.dart';
 import 'package:test_project/utils/poolable_object.dart';
 
 class Enemy extends SpriteAnimationComponent with HasGameReference<SpaceShooterGame>, CollisionCallbacks, DamageableComponent implements PoolableObject {

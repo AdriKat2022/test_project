@@ -1,6 +1,6 @@
 import 'package:flame/components.dart';
 import 'package:test_project/data/audio_manager.dart';
-import 'package:test_project/space_shooter_game.dart';
+import 'package:test_project/main.dart';
 
 /// Creates a little explosion animation (for the moment only one type is available, but we could make a enum to select the one we want). 
 class Explosion extends SpriteAnimationComponent with HasGameReference<SpaceShooterGame> {

@@ -8,7 +8,7 @@
             "name": "test_project",
             "request": "launch",
             "type": "dart",
-            "program": "lib/space_shooter_game.dart"
+            "program": "lib/main.dart"
         },
     ]
 }

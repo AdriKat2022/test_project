@@ -1,5 +1,5 @@
 import 'package:flame/collisions.dart';
-import 'package:test_project/space_shooter_game.dart';
+import 'package:test_project/main.dart';
 import 'package:flame/components.dart';
 import 'package:test_project/utils/poolable_object.dart';
 

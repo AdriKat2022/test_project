@@ -7,7 +7,7 @@ import 'package:test_project/components/damageable_component.dart';
 import 'package:test_project/components/enemy.dart';
 import 'package:test_project/data/audio_manager.dart';
 import 'package:test_project/effects/sprite_color_flash.dart';
-import 'package:test_project/space_shooter_game.dart';
+import 'package:test_project/main.dart';
 import 'package:test_project/components/bullet.dart';
 import 'package:test_project/utils/object_pool.dart';
 

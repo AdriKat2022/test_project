@@ -1,5 +1,5 @@
 import 'package:flame/components.dart';
-import 'package:test_project/space_shooter_game.dart';
+import 'package:test_project/main.dart';
 import 'package:test_project/components/enemy.dart';
 import 'package:test_project/utils/object_pool.dart';
 import 'package:test_project/data/wave_data.dart';
