@@ -5,6 +5,7 @@ import 'package:flame/components.dart';
 import 'package:flame/rendering.dart';
 import 'package:test_project/components/damageable_component.dart';
 import 'package:test_project/components/enemy.dart';
+import 'package:test_project/data/audio_manager.dart';
 import 'package:test_project/effects/sprite_color_flash.dart';
 import 'package:test_project/space_shooter_game.dart';
 import 'package:test_project/components/bullet.dart';
@@ -54,7 +55,7 @@ class Player extends SpriteAnimationComponent with HasGameReference<SpaceShooter
       period: .2,
       selfPositioning: true,
       factory: (index) {
-
+        AudioManager.playSound('player_bullet');
         final bullet = playerBulletPool.get();
         if (bullet != null){
           bullet.position = position + Vector2(0, -height/2);
@@ -117,7 +118,6 @@ class Player extends SpriteAnimationComponent with HasGameReference<SpaceShooter
       disablePlayer();
     }
     game.gameUI.heartsBar.updateLives(hp);
-    // TODO: Make an effect for the player when taking damage.
   }
 
   @override

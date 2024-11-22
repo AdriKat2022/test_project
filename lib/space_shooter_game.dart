@@ -26,7 +26,8 @@ class SpaceShooterGame extends FlameGame with PanDetector, HasCollisionDetection
   @override
   Future<void> onLoad() async {
 
-    AudioManager.loadSounds();
+    AudioManager.game = this;
+    AudioManager.initialize();
 
     // Load the parallax background.
     final parallax = await loadParallaxComponent(
@@ -58,6 +59,8 @@ class SpaceShooterGame extends FlameGame with PanDetector, HasCollisionDetection
     gameUI = GameUI(restartGameFunction: () => resetGame());
     add(gameUI);
     LogDebug.printToHUD(this, "Game loaded!");
+
+    AudioManager.playMusic('main_theme');
   }
 
   void gameOver(){
