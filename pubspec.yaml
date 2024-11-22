@@ -23,3 +23,10 @@ flutter:
     - assets/images/effects/
     - assets/images/UI/
     - assets/images/UI/buttons/
+  fonts:
+    - family: GoodTiming
+      fonts:
+        - asset: fonts/good_timing.otf
+    - family: FragileBombers
+      fonts:
+        - asset: fonts/fragile_bombers.otf

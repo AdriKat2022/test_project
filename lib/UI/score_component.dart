@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
 import 'package:flame/text.dart';
+import 'package:test_project/data/font_palette.dart';
 
 class ScoreComponent extends TextComponent {
   int score = 0;
@@ -12,9 +13,8 @@ class ScoreComponent extends TextComponent {
   @override
   Future<void> onLoad() async {
     super.onLoad();
-    position = Vector2(10, 10); // Example: Top-left corner
-    textRenderer = TextPaint(style: TextStyle(fontSize: 24, color: Color(0xFFFFFFFF)));
-  }
+    textRenderer = TextPaint(style: TextStyle(fontFamily: FontPalette.primaryTextFont, fontSize: 24, color: Color(0xFFFFFFFF)));
+  } 
 
   void updateScore(int newScore) {
     // Throw a little animation

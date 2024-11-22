@@ -2,7 +2,7 @@ import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
 import 'package:flutter/material.dart';
 
-class HeartsBarComponent extends Component {
+class HeartsBarComponent extends PositionComponent {
 
   // Hold the maximum number of lives the player can have.
   List<SpriteComponent> disabledHearts = [];
@@ -14,7 +14,8 @@ class HeartsBarComponent extends Component {
   /// HeartSprite
   late final Sprite heartSprite;
 
-  HeartsBarComponent({required this.lives});
+  HeartsBarComponent({super.position, required this.lives});
+  
 
   @override
   Future<void> onLoad() async {

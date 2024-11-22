@@ -8,6 +8,7 @@ import 'package:test_project/components/enemy.dart';
 import 'package:test_project/components/wave.dart';
 import 'package:test_project/components/player.dart';
 import 'package:test_project/data/wave_data.dart';
+import 'package:test_project/utils/log_debug.dart';
 import 'package:test_project/utils/object_pool.dart';
 
 class SpaceShooterGame extends FlameGame with PanDetector, HasCollisionDetection {
@@ -86,6 +87,7 @@ class SpaceShooterGame extends FlameGame with PanDetector, HasCollisionDetection
     // Add the UI
     gameUI = GameUI(restartGameFunction: () => resetGame());
     add(gameUI);
+    LogDebug.printToHUD(this, "Game loaded!");
   }
 
   void resetGame(){
