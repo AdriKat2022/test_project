@@ -6,6 +6,7 @@ import 'package:test_project/components/bullet.dart';
 import 'package:test_project/components/damageable_component.dart';
 import 'package:test_project/data/move_strategies.dart';
 import 'package:test_project/effects/explosion.dart';
+import 'package:test_project/effects/sprite_color_flash.dart';
 import 'package:test_project/space_shooter_game.dart';
 import 'package:test_project/utils/poolable_object.dart';
 
@@ -17,6 +18,7 @@ class Enemy extends SpriteAnimationComponent with HasGameReference<SpaceShooterG
   // Those properties are defined at spawning time (That's why they are late).
   late MoveStrategy moveStrategy;
   late double speed;
+  late SpriteColorFlash spriteColorFlash;
 
   double timer = 0;
   bool isDead = false;
@@ -46,6 +48,7 @@ class Enemy extends SpriteAnimationComponent with HasGameReference<SpaceShooterG
       SpriteAnimationData.sequenced(amount: 2, stepTime: 0.4, textureSize: Vector2(7, 6)),
     );
     add(RectangleHitbox());
+    spriteColorFlash = SpriteColorFlash(this, 0, 0, 0.2, Color(0xFFFF0000));
   }
 
   @override
@@ -103,15 +106,23 @@ class Enemy extends SpriteAnimationComponent with HasGameReference<SpaceShooterG
     pool();
   }
 
+  void damageEnemy(int damage){
+    if (takeDamage(damage)){
+      death(true);
+    }
+    else {
+      spriteColorFlash.activate();
+    }
+  }
+
   @override
   void onCollisionStart(Set<Vector2> intersectionPoints, PositionComponent other) {
     if (isDead) return;
     super.onCollisionStart(intersectionPoints, other);
+
     // We're checking for bullets but we could also check for a interface for diversity (like DamageableBody).
     if (other is Bullet){
-      if(takeDamage(other.getDamage())){
-        death(true);
-      }
+      damageEnemy(other.baseDamage);
       other.deleteBullet();
     }
   }
