@@ -34,27 +34,20 @@ class FadingNotificationText extends TextComponent with HasGameReference<SpaceSh
   }
 
   /// Trigger the text effect.
-  void triggerEffect({double fadeInDuration = 0, double holdDuration = 3, double blinkSpeed = 1, int blinkCount = 0, double fadeOutDuration = 0.5, bool fadeOutWhileBlinking = false}) {
+  void triggerEffect({
+    double fadeInDuration = 0,
+    double holdDuration = 3,
+    double blinkSpeed = 1,
+    int blinkCount = 0,
+    double fadeOutDuration = 0.5,
+    bool fadeOutWhileBlinking = false
+  }) {
 
     print("triggering effect");
 
     if (blinkCount > 0) {
-      // Create a one blink controller.
-      final oneBlinkController = EffectController(
-        duration: 0,
-        reverseDuration: 0,
-        atMaxDuration: 1 / blinkSpeed,
-        atMinDuration: 1 / blinkSpeed,
-      );
-
-      // Create one blink effect.
-      final oneBlinkEffect = OpacityEffect.fadeIn(
-        oneBlinkController,
-        onComplete: () {
-          // Hide the text after the fade-out completes.
-          removeFromParent();
-        },
-      );
+      LogDebug.printToHUD(game, "Blinking effect not supported!");
+      return;
     }
     else {
       print("simple effect: fadein=$fadeInDuration s, hold=$holdDuration s, fadeout=$fadeOutDuration s");
@@ -70,7 +63,6 @@ class FadingNotificationText extends TextComponent with HasGameReference<SpaceSh
           onComplete: () {
             // Hide the text after the fade-out completes.
             removeFromParent();
-            LogDebug.printToHUD(game, "effect DONE");
           },
         ),
       );
@@ -80,7 +72,6 @@ class FadingNotificationText extends TextComponent with HasGameReference<SpaceSh
   @override
   void update(double dt) {
     super.update(dt);
-    print("opacity: $opacity");
+    // The opacity cannot be repercuted directly on the text component (This is an issue with the Flame library, we would need a workaround).
   }
-
 }

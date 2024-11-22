@@ -7,7 +7,7 @@ import 'package:test_project/UI/game_ui.dart';
 import 'package:test_project/components/enemy.dart';
 import 'package:test_project/components/wave.dart';
 import 'package:test_project/components/player.dart';
-import 'package:test_project/data/wave_data.dart';
+import 'package:test_project/data/waves_data_container.dart';
 import 'package:test_project/utils/log_debug.dart';
 import 'package:test_project/utils/object_pool.dart';
 
@@ -45,43 +45,8 @@ class SpaceShooterGame extends FlameGame with PanDetector, HasCollisionDetection
       createObjectFunction: () => Enemy(health: 20),
     );
 
-    // Add the waves. TODO: Move this to a seperate class for cleaner code.
-    gameWave = WaveManager(enemyPool: enemyPool, waveDataList: [
-      WaveData(
-        enemies: [
-          // 3 enemies in line.
-          EnemyData(type: EnemyTypes.basic, position: Vector2(100, -50), delay: 0),
-          EnemyData(type: EnemyTypes.basic, position: Vector2(200, -50), delay: 0),
-          EnemyData(type: EnemyTypes.basic, position: Vector2(300, -50), delay: 2),
-          // 4 enemies in line.
-          EnemyData(type: EnemyTypes.zigzag, position: Vector2(200, -50), delay: 0),
-          EnemyData(type: EnemyTypes.zigzag, position: Vector2(300, -50), delay: 0),
-          EnemyData(type: EnemyTypes.zigzag, position: Vector2(400, -50), delay: 0),
-          EnemyData(type: EnemyTypes.zigzag, position: Vector2(500, -50), delay: 0),
-        ],
-        prewaveDelay: 2,
-      ),
-      WaveData(
-        enemies: [
-          EnemyData(type: EnemyTypes.tank, position: Vector2(300, -50), delay: 0),
-          EnemyData(type: EnemyTypes.tank, position: Vector2(400, -50), delay: 0),
-          EnemyData(type: EnemyTypes.tank, position: Vector2(500, -50), delay: 1),
-          EnemyData(type: EnemyTypes.basic, position: Vector2(250, -50), delay: 0),
-          EnemyData(type: EnemyTypes.basic, position: Vector2(350, -50), delay: 0),
-          EnemyData(type: EnemyTypes.basic, position: Vector2(450, -50), delay: 0),
-          EnemyData(type: EnemyTypes.basic, position: Vector2(550, -50), delay: 2),
-          // Other Line.
-          EnemyData(type: EnemyTypes.basic, position: Vector2(700, -50), delay: 0.3),
-          EnemyData(type: EnemyTypes.basic, position: Vector2(600, -50), delay: 0.3),
-          EnemyData(type: EnemyTypes.basic, position: Vector2(500, -50), delay: 0.3),
-          EnemyData(type: EnemyTypes.basic, position: Vector2(400, -50), delay: 0.3),
-          EnemyData(type: EnemyTypes.basic, position: Vector2(300, -50), delay: 0.3),
-          EnemyData(type: EnemyTypes.basic, position: Vector2(200, -50), delay: 0.3),
-          EnemyData(type: EnemyTypes.basic, position: Vector2(100, -50), delay: 0.3),
-        ],
-        prewaveDelay: 10,
-      ),
-    ]);
+    // Add the waves.
+    gameWave = WaveManager(enemyPool: enemyPool, waveDataList: WavesDataContainer.wavePattern_1);
     add(gameWave);
 
     // Add the UI

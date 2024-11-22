@@ -28,6 +28,7 @@ class GameUI extends Component with HasGameReference<SpaceShooterGame>{
     add(heartsBar);
     scoreComponent.position = Vector2(game.size.x - 50, 50);
     scoreComponent.anchor = Anchor.topRight;
+    scoreComponent.scale = Vector2.all(2);
     add(scoreComponent);
 
     restartButton = ButtonComponent(
