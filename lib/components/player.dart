@@ -13,8 +13,8 @@ import 'package:test_project/utils/object_pool.dart';
 
 class Player extends SpriteAnimationComponent with HasGameReference<SpaceShooterGame>, CollisionCallbacks, DamageableComponent {
 
-  static const double bulletsPerSecond = 5;
-  static const int bulletsBaseDamage = 5;
+  static const double bulletsPerSecond = 15;
+  static const double bulletsBaseDamage = 1;
 
   int points = 0;
 
@@ -22,7 +22,7 @@ class Player extends SpriteAnimationComponent with HasGameReference<SpaceShooter
   late final ObjectPool<Bullet> playerBulletPool;
   late final SpriteColorFlash spriteColorFlash;
 
-  Player({int maxHP = 3}) : super(
+  Player({double maxHP = 3}) : super(
     size: Vector2(100, 150) * 0.8,
     anchor: Anchor.center,
   ){
@@ -106,7 +106,7 @@ class Player extends SpriteAnimationComponent with HasGameReference<SpaceShooter
 
   void reset(){
     fullHeal();
-    game.gameUI.heartsBar.updateLives(hp);
+    game.gameUI.heartsBar.updateLives(hp.toInt());
     game.gameUI.scoreComponent.updateScore(0);
     points = 0;
     position = game.size/2;
@@ -121,7 +121,7 @@ class Player extends SpriteAnimationComponent with HasGameReference<SpaceShooter
     if (isHpZeroOrBelow()){
       disablePlayer();
     }
-    game.gameUI.heartsBar.updateLives(hp);
+    game.gameUI.heartsBar.updateLives(hp.toInt());
   }
 
   @override

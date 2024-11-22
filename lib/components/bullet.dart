@@ -7,7 +7,7 @@ class Bullet extends SpriteAnimationComponent with HasGameReference<SpaceShooter
 
   double bulletSpeed = 700;  
   bool isPooled = true;
-  int baseDamage = 10;
+  double baseDamage = 10;
 
   Bullet({
     super.position,
@@ -43,11 +43,11 @@ class Bullet extends SpriteAnimationComponent with HasGameReference<SpaceShooter
     }
   }
 
-  void setDamage(int newDamage){
+  void setDamage(double newDamage){
     baseDamage = newDamage;
   }
 
-  int getDamage(){
+  double getDamage(){
     return baseDamage;
   }
 

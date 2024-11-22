@@ -42,12 +42,12 @@ class SpaceShooterGame extends FlameGame with PanDetector, HasCollisionDetection
     );
     add(parallax);
 
-    player = Player(maxHP: playerMaxHp);
+    player = Player(maxHP: playerMaxHp.toDouble());
     add(player);
 
     // Create the enemy pool (could be moved into a LEVEL class).
     enemyPool = ObjectPool<Enemy>(
-      maxSize: 50,
+      maxSize: 70,
       createObjectFunction: () => Enemy(health: 20),
     );
 

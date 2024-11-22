@@ -26,7 +26,7 @@ class Enemy extends SpriteAnimationComponent with HasGameReference<SpaceShooterG
   bool isDead = false;
 
   Enemy({
-      super.position, moveStrategy, int health = 0
+      super.position, moveStrategy, double health = 0
     }) : super(
             size: Vector2.all(enemyBaseSize),
             anchor: Anchor.center,
@@ -107,7 +107,7 @@ class Enemy extends SpriteAnimationComponent with HasGameReference<SpaceShooterG
     pool();
   }
 
-  void damageEnemy(int damage){
+  void damageEnemy(double damage){
     if (takeDamage(damage)){
       death(true);
     }
