@@ -1,10 +1,10 @@
 /// HP are stored as an integer value, and the max HP is set in the constructor. Use it as part of any entity that can take damage.
 mixin class DamageableComponent {
 
-  double get hp => _hp;
-
   late double _hp = 10;
   double _maxHp = 10;
+
+  double getHp() => _hp;
 
   /// Sets the new maxHP and optionally sets the current HP of the entity to that new maxHP.
   void setMaxHp(double newMaxHp, {bool heal = true}) {
@@ -21,7 +21,7 @@ mixin class DamageableComponent {
   /// Returns true if the entity is dead.
   bool takeDamage(double damage) {
     _hp -= damage;
-    if (hp < 0) _hp = 0;
+    if (_hp < 0) _hp = 0;
     return isHpZeroOrBelow();
   }
 

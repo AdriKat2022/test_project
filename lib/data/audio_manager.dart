@@ -16,6 +16,7 @@ class AudioManager {
     'sounds/explosion.wav': 'explosion',
     'sounds/player_bullet.wav': 'player_bullet',
     'sounds/enemy_hurt.wav': 'enemy_hurt',
+    'sounds/weapon_switch.wav': 'weapon_switch',
     // 'sounds/player_hurt.wav': 'player_hurt',
     // 'sounds/score.wav': 'score',
     // 'sounds/game_over.wav': 'game_over',

@@ -3,6 +3,7 @@ import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flame/parallax.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:test_project/UI/game_ui.dart';
 import 'package:test_project/components/enemy.dart';
 import 'package:test_project/components/wave.dart';
@@ -12,7 +13,7 @@ import 'package:test_project/data/waves_data_container.dart';
 import 'package:test_project/utils/log_debug.dart';
 import 'package:test_project/utils/object_pool.dart';
 
-class SpaceShooterGame extends FlameGame with PanDetector, HasCollisionDetection {
+class SpaceShooterGame extends FlameGame with PanDetector, HasCollisionDetection, KeyboardEvents {
 
   static const int playerMaxHp = 4;
 
@@ -21,6 +22,7 @@ class SpaceShooterGame extends FlameGame with PanDetector, HasCollisionDetection
   late final ObjectPool<Enemy> enemyPool;
   late final GameUI gameUI;
 
+  bool gameStarted = false;
   bool gameIsOver = false;
 
   @override
@@ -75,8 +77,15 @@ class SpaceShooterGame extends FlameGame with PanDetector, HasCollisionDetection
     LogDebug.printToHUD(this, "You Win!");
   }
 
+  void gameBegin(){
+    gameStarted = true;
+    player.startShooting();
+    gameWave.startRun();
+  }
+
   void resetGame(){
     gameIsOver = false;
+    gameStarted = false;
     player.reset();
     gameWave.reset();
     enemyPool.emptyPool();
@@ -88,13 +97,20 @@ class SpaceShooterGame extends FlameGame with PanDetector, HasCollisionDetection
   }
 
   @override
-  void onPanStart(DragStartInfo info){
-    player.startShooting();
-  }
+  KeyEventResult onKeyEvent(KeyEvent event, Set<LogicalKeyboardKey> keysPressed) {
 
-  @override
-  void onPanEnd(DragEndInfo info){
-    player.stopShooting();
+    if (event is KeyDownEvent){
+      if (event.logicalKey == LogicalKeyboardKey.space){
+        if (gameStarted){
+          player.switchWeapon();
+        }
+        else {
+          gameBegin();
+        }
+        return KeyEventResult.handled;
+      }
+    }
+    return KeyEventResult.ignored;
   }
 }
 

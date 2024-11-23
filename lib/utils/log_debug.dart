@@ -39,8 +39,8 @@ class LogDebug {
           // Remove the text effect.
           text.removeAll(text.children);
           text.text = message;
-          text.add(OpacityEffect.fadeIn(EffectController(duration: 0)));
-          text.add(OpacityEffect.fadeOut(EffectController(atMinDuration: duration, duration: 1)));
+          // text.add(OpacityEffect.fadeIn(EffectController(duration: 0)));
+          // text.add(OpacityEffect.fadeOut(EffectController(atMinDuration: duration, duration: 1)));
         }
         else {
           // Find a free position to display the message using the lastYKeyPosition.
@@ -49,7 +49,7 @@ class LogDebug {
             lastYKeyPosition = minY;
           }
           final text = TextComponent(text: message, position: Vector2(xKeyPosition.toDouble(), lastYKeyPosition.toDouble()));
-          text.add(OpacityEffect.fadeOut(EffectController(duration: duration)));
+          // text.add(OpacityEffect.fadeOut(EffectController(duration: duration)));
           game.add(text);
           indexHudMessages[key] = text;
         }

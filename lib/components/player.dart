@@ -5,11 +5,12 @@ import 'package:flame/components.dart';
 import 'package:flame/rendering.dart';
 import 'package:test_project/components/damageable_component.dart';
 import 'package:test_project/components/enemy.dart';
+import 'package:test_project/components/weapons/straight_gun.dart';
+import 'package:test_project/components/weapons/weapon.dart';
 import 'package:test_project/data/audio_manager.dart';
 import 'package:test_project/effects/sprite_color_flash.dart';
 import 'package:test_project/main.dart';
-import 'package:test_project/components/bullet.dart';
-import 'package:test_project/utils/object_pool.dart';
+import 'package:test_project/utils/log_debug.dart';
 
 class Player extends SpriteAnimationComponent with HasGameReference<SpaceShooterGame>, CollisionCallbacks, DamageableComponent {
 
@@ -18,9 +19,13 @@ class Player extends SpriteAnimationComponent with HasGameReference<SpaceShooter
 
   int points = 0;
 
-  late final SpawnComponent bulletSpawner;
-  late final ObjectPool<Bullet> playerBulletPool;
   late final SpriteColorFlash spriteColorFlash;
+
+  // Load weapons.
+  bool _canSwitchWeapon = false;
+  int _currentWeaponIndex = 0;
+  final _weaponsList = <Weapon>[];
+  late Weapon _currentWeapon;
 
   Player({double maxHP = 3}) : super(
     size: Vector2(100, 150) * 0.8,
@@ -46,36 +51,32 @@ class Player extends SpriteAnimationComponent with HasGameReference<SpaceShooter
     );
     add(RectangleHitbox(collisionType: CollisionType.active));
 
-    // TODO: Move the bullet pool and the bullet spawner to a separate class (weapon component).
-    // Initialize BulletPool.
-    playerBulletPool = ObjectPool<Bullet>(
-      maxSize: 20,
-      createObjectFunction: () => Bullet(),
-    );
+    // Load weapons.
+    // Those are examples, but we could have multiple classes so we can have different weapons with different bullets.
+    _weaponsList.addAll([
+      StraightGun(owner: game, positionTarget: this, damage: 2, fireRate: 0.1, offset: Vector2(0, -50)),
+      StraightGun(owner: game, positionTarget: this, damage: 10, fireRate: 0.4, offset: Vector2(0, -50), bulletColor: Color(0x88FF0000)),
+    ]);
 
-    // Initialize Bullet Spawner using the ObjectPool.
-    bulletSpawner = SpawnComponent(
-      period: 1/bulletsPerSecond,
-      selfPositioning: true,
-      factory: (index) {
-        AudioManager.playSound('player_bullet');
-        final bullet = playerBulletPool.get();
-        if (bullet != null){
-          bullet.position = position + Vector2(0, -height/2);
-          bullet.setDamage(bulletsBaseDamage);
-          return bullet;
-        }
-        throw Exception("Pool is all occupied!");
-      },
-      autoStart: false,
-    );
-
-    game.add(bulletSpawner);
+    _currentWeapon = _weaponsList[_currentWeaponIndex];
+    for (final weapon in _weaponsList){
+      weapon.init();
+    }
   }
 
   void selectTintColor(Color color){
     decorator.removeLast();
     decorator.addLast(PaintDecorator.tint(color));
+  }
+
+  void switchWeapon(){
+    if (!_canSwitchWeapon) return;
+    _currentWeapon.stopShooting();
+    _currentWeaponIndex = (_currentWeaponIndex + 1) % _weaponsList.length;
+    _currentWeapon = _weaponsList[_currentWeaponIndex];
+    _currentWeapon.startShooting();
+    LogDebug.printToHUD(game, "Switched to weapon ${_currentWeaponIndex + 1}");
+    AudioManager.playSound('weapon_switch');
   }
 
   void move(Vector2 delta){
@@ -85,12 +86,14 @@ class Player extends SpriteAnimationComponent with HasGameReference<SpaceShooter
 
   void startShooting(){
     if (isHpZeroOrBelow()) return;
-    bulletSpawner.timer.start();
+    LogDebug.printToHUD(game, "Player started shooting.");
+    _canSwitchWeapon = true;
+    _currentWeapon.startShooting();
   }
 
   void stopShooting(){
     if (isHpZeroOrBelow()) return;
-    bulletSpawner.timer.stop();
+    _currentWeapon.stopShooting();
   }
 
   void addScore(int score){
@@ -99,18 +102,23 @@ class Player extends SpriteAnimationComponent with HasGameReference<SpaceShooter
   }
 
   void disablePlayer(){
-    bulletSpawner.timer.stop();
+    _canSwitchWeapon = false;
+    _currentWeapon.stopShooting();
     removeFromParent();
     game.gameOver();
   }
 
   void reset(){
     fullHeal();
-    game.gameUI.heartsBar.updateLives(hp.toInt());
+    stopShooting();
+    _emptyWeapons();
+    _currentWeaponIndex = 0;
+    _currentWeapon = _weaponsList[_currentWeaponIndex];
+    game.gameUI.heartsBar.updateLives(getHp().toInt());
     game.gameUI.scoreComponent.updateScore(0);
     points = 0;
     position = game.size/2;
-    playerBulletPool.emptyPool();
+    _canSwitchWeapon = true;
     removeFromParent();
     game.add(this);
   }
@@ -121,7 +129,7 @@ class Player extends SpriteAnimationComponent with HasGameReference<SpaceShooter
     if (isHpZeroOrBelow()){
       disablePlayer();
     }
-    game.gameUI.heartsBar.updateLives(hp.toInt());
+    game.gameUI.heartsBar.updateLives(getHp().toInt());
   }
 
   @override
@@ -132,6 +140,12 @@ class Player extends SpriteAnimationComponent with HasGameReference<SpaceShooter
       print("player took damage");
       other.death(false);
       damagePlayer();
+    }
+  }
+
+  void _emptyWeapons(){
+    for (final weapon in _weaponsList){
+      weapon.clearAllProjectiles();
     }
   }
 }

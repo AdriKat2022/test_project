@@ -7,28 +7,28 @@ import 'package:flame/effects.dart';
 class SpriteColorFlash {
 
   /// The component to apply the effect to.
-  Component sprite;
+  Component _target;
 
-  final double fadeInDuration;
-  final double holdDuration;
-  final double fadeOutDuration;
+  final double _fadeInDuration;
+  final double _holdDuration;
+  final double _fadeOutDuration;
 
   /// The color to flash the sprite.
-  final Color color;
+  final Color _color;
 
   double timer = 0.0;
 
   /// Constructor for the SpriteRedFlash effect.
-  SpriteColorFlash(this.sprite, this.fadeInDuration, this.holdDuration, this.fadeOutDuration, this.color);
+  SpriteColorFlash(this._target, this._fadeInDuration, this._holdDuration, this._fadeOutDuration, this._color);
 
   /// Activate the effect.
   void activate() {
-    sprite.add(ColorEffect(
-      color,
+    _target.add(ColorEffect(
+      _color,
       EffectController(
-        duration: fadeInDuration,
-        atMaxDuration: holdDuration,
-        reverseDuration: fadeOutDuration,
+        duration: _fadeInDuration,
+        atMaxDuration: _holdDuration,
+        reverseDuration: _fadeOutDuration,
       ),
     ));
   }

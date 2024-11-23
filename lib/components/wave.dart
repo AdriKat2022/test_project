@@ -14,6 +14,7 @@ class WaveManager extends Component with HasGameReference<SpaceShooterGame> {
 
   int enemyIndex = 0;
   int currentWaveIndex = 0;
+  bool isRunActive = false;
   bool isWaveActive = false;
   bool resetFlag = false;
 
@@ -25,6 +26,8 @@ class WaveManager extends Component with HasGameReference<SpaceShooterGame> {
   @override
   void update(double dt) {
     super.update(dt);
+
+    if (!isRunActive) return;
 
     if (resetFlag) {
       resetFlag = false;
@@ -98,11 +101,16 @@ class WaveManager extends Component with HasGameReference<SpaceShooterGame> {
   }
 
   void reset(){
+    isRunActive = false;
     resetFlag = true;
+    isWaveActive = false;
     timeSinceWaveStarted = 0;
     nextEnemyTime = 0;
     enemyIndex = 0;
     currentWaveIndex = 0;
-    isWaveActive = false;
+  }
+
+  void startRun(){
+    isRunActive = true;
   }
 }

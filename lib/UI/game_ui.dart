@@ -11,14 +11,16 @@ import 'package:test_project/utils/log_debug.dart';
 
 class GameUI extends Component with HasGameReference<SpaceShooterGame>{
 
-  final Function restartGameFunction;
   final HeartsBarComponent heartsBar = HeartsBarComponent(lives: SpaceShooterGame.playerMaxHp);
   final ScoreComponent scoreComponent = ScoreComponent();
+  final Function _restartGameFunction;
 
   late final ColorSelector colorSelector;
   late final ButtonComponent restartButton;
 
-  GameUI({required this.restartGameFunction});
+  late final FadingNotificationText beginNotification;
+
+  GameUI({required Function restartGameFunction}) : _restartGameFunction = restartGameFunction;
 
   @override
   Future<void> onLoad() async {
@@ -26,7 +28,11 @@ class GameUI extends Component with HasGameReference<SpaceShooterGame>{
     
     final notificationText = FadingNotificationText(text: "Move your ship with [Mouse]", position: Vector2(game.size.x/2, game.size.y/5), defaultFadeOutDuration: 0.5);
     add(notificationText);
-    notificationText.triggerEffect(fadeInDuration: 0.5, holdDuration: 3, fadeOutDuration: 0.5);
+    notificationText.triggerEffect(fadeInDuration: 0.5, holdDuration: 8, fadeOutDuration: 0.5);
+
+    beginNotification = FadingNotificationText(text: "Press [SPACE] to begin !", position: Vector2(game.size.x/2, game.size.y/4), defaultFadeOutDuration: 0.5);
+    add(beginNotification);
+    beginNotification.triggerEffect(fadeInDuration: 0.5, holdDuration: 8, fadeOutDuration: 0.5);
 
     heartsBar.anchor = Anchor.topLeft;
     heartsBar.position = Vector2(50, 50);
@@ -40,7 +46,7 @@ class GameUI extends Component with HasGameReference<SpaceShooterGame>{
         text: 'Restart',
         onPressed: () {
           LogDebug.printToHUD(game, "Game reset!");
-          restartGameFunction();
+          _restartGameFunction();
         },
         normalSprite: await Sprite.load('ui/buttons/return_btn.png'),
         hoverSprite: await Sprite.load('ui/buttons/return_btn_hover.png'),
@@ -56,7 +62,6 @@ class GameUI extends Component with HasGameReference<SpaceShooterGame>{
       componentsSize: 50,
       spacing: 10,
       onColorSelected: (color) {
-        // LogDebug.printToHUD(game, "Color selected: $color");
         game.player.selectTintColor(color);
       }
     ));
