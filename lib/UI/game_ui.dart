@@ -17,6 +17,7 @@ class GameUI extends Component with HasGameReference<SpaceShooterGame>{
 
   late final ColorSelector _colorSelector;
   late final ButtonComponent _restartButton;
+  late final ButtonComponent _playButton;
 
   late final FadingNotificationText _beginNotification;
 
@@ -41,6 +42,20 @@ class GameUI extends Component with HasGameReference<SpaceShooterGame>{
     scoreComponent.anchor = Anchor.topRight;
     scoreComponent.scale = Vector2.all(2);
     add(scoreComponent);
+
+    _playButton = ButtonComponent(
+        text: 'Play',
+        onPressed: () {
+          game.gameStart();
+        },
+        normalSprite: await Sprite.load('ui/buttons/play_btn.png'),
+        hoverSprite: await Sprite.load('ui/buttons/play_btn_hover.png'),
+        pressedSprite: await Sprite.load('ui/buttons/play_btn_pressed.png'),
+        position: Vector2(game.size.x/2 , game.size.y/2),
+        size: Vector2.all(100)
+      );
+    _playButton.anchor = Anchor.center;
+    add(_playButton);
 
     _restartButton = ButtonComponent(
         text: 'Restart',
@@ -81,10 +96,23 @@ class GameUI extends Component with HasGameReference<SpaceShooterGame>{
     _colorSelector.position = Vector2(gameSize.x - 150, gameSize.y - 50);
   }
 
+  void onGameStart(){
+    if(_beginNotification.parent != null){
+      _beginNotification.removeFromParent();
+    }
+    if(_playButton.parent != null){
+      _playButton.removeFromParent();
+    }
+  }
+
   void onGameReset(){
     // Only add the notification if it's not already added.
-    if (_beginNotification.parent != null) return;
-    add(_beginNotification);
-    _beginNotification.triggerEffect(fadeInDuration: 0.5, holdDuration: 8, fadeOutDuration: 0.5);
+    if(_beginNotification.parent == null){
+      add(_beginNotification);
+      _beginNotification.triggerEffect(fadeInDuration: 0.5, holdDuration: 8, fadeOutDuration: 0.5);
+    }
+    if(_playButton.parent == null){
+      add(_playButton);
+    }
   }
 }

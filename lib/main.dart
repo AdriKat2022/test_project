@@ -77,10 +77,11 @@ class SpaceShooterGame extends FlameGame with PanDetector, HasCollisionDetection
     LogDebug.printToHUD(this, "You Win!");
   }
 
-  void gameBegin(){
+  void gameStart(){
     gameStarted = true;
     player.startShooting();
     gameWave.startRun();
+    gameUI.onGameStart();
   }
 
   void resetGame(){
@@ -106,7 +107,7 @@ class SpaceShooterGame extends FlameGame with PanDetector, HasCollisionDetection
           player.switchWeapon();
         }
         else {
-          gameBegin();
+          gameStart();
         }
         return KeyEventResult.handled;
       }
