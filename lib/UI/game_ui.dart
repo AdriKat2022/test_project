@@ -15,10 +15,10 @@ class GameUI extends Component with HasGameReference<SpaceShooterGame>{
   final ScoreComponent scoreComponent = ScoreComponent();
   final Function _restartGameFunction;
 
-  late final ColorSelector colorSelector;
-  late final ButtonComponent restartButton;
+  late final ColorSelector _colorSelector;
+  late final ButtonComponent _restartButton;
 
-  late final FadingNotificationText beginNotification;
+  late final FadingNotificationText _beginNotification;
 
   GameUI({required Function restartGameFunction}) : _restartGameFunction = restartGameFunction;
 
@@ -30,9 +30,9 @@ class GameUI extends Component with HasGameReference<SpaceShooterGame>{
     add(notificationText);
     notificationText.triggerEffect(fadeInDuration: 0.5, holdDuration: 8, fadeOutDuration: 0.5);
 
-    beginNotification = FadingNotificationText(text: "Press [SPACE] to begin !", position: Vector2(game.size.x/2, game.size.y/4), defaultFadeOutDuration: 0.5);
-    add(beginNotification);
-    beginNotification.triggerEffect(fadeInDuration: 0.5, holdDuration: 8, fadeOutDuration: 0.5);
+    _beginNotification = FadingNotificationText(text: "Press [SPACE] to begin !", position: Vector2(game.size.x/2, game.size.y/4), defaultFadeOutDuration: 0.5);
+    add(_beginNotification);
+    _beginNotification.triggerEffect(fadeInDuration: 0.5, holdDuration: 8, fadeOutDuration: 0.5);
 
     heartsBar.anchor = Anchor.topLeft;
     heartsBar.position = Vector2(50, 50);
@@ -42,7 +42,7 @@ class GameUI extends Component with HasGameReference<SpaceShooterGame>{
     scoreComponent.scale = Vector2.all(2);
     add(scoreComponent);
 
-    restartButton = ButtonComponent(
+    _restartButton = ButtonComponent(
         text: 'Restart',
         onPressed: () {
           LogDebug.printToHUD(game, "Game reset!");
@@ -54,10 +54,10 @@ class GameUI extends Component with HasGameReference<SpaceShooterGame>{
         position: Vector2(game.size.x/2 , game.size.y - 50),
         size: Vector2.all(50)
       );
-    restartButton.anchor = Anchor.bottomCenter;
-    add(restartButton);
+    _restartButton.anchor = Anchor.bottomCenter;
+    add(_restartButton);
 
-    colorSelector = (ColorSelector(
+    _colorSelector = (ColorSelector(
       colors: FontPalette.shipAvailableColors,
       componentsSize: 50,
       spacing: 10,
@@ -65,9 +65,9 @@ class GameUI extends Component with HasGameReference<SpaceShooterGame>{
         game.player.selectTintColor(color);
       }
     ));
-    colorSelector.position = Vector2(game.size.x - 150, game.size.y - 100);
-    colorSelector.anchor = Anchor.bottomRight;
-    add(colorSelector);
+    _colorSelector.position = Vector2(game.size.x - 150, game.size.y - 100);
+    _colorSelector.anchor = Anchor.bottomRight;
+    add(_colorSelector);
 
     priority = 10;
   }
@@ -77,7 +77,14 @@ class GameUI extends Component with HasGameReference<SpaceShooterGame>{
     super.onGameResize(gameSize);
     heartsBar.position = Vector2(50, 50);
     scoreComponent.position = Vector2(gameSize.x - 50, 50);
-    restartButton.position = Vector2(gameSize.x/2 , gameSize.y - 50);
-    colorSelector.position = Vector2(gameSize.x - 150, gameSize.y - 50);
+    _restartButton.position = Vector2(gameSize.x/2 , gameSize.y - 50);
+    _colorSelector.position = Vector2(gameSize.x - 150, gameSize.y - 50);
+  }
+
+  void onGameReset(){
+    // Only add the notification if it's not already added.
+    if (_beginNotification.parent != null) return;
+    add(_beginNotification);
+    _beginNotification.triggerEffect(fadeInDuration: 0.5, holdDuration: 8, fadeOutDuration: 0.5);
   }
 }
