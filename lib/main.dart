@@ -62,26 +62,29 @@ class SpaceShooterGame extends FlameGame with PanDetector, HasCollisionDetection
     add(gameUI);
     LogDebug.printToHUD(this, "Game loaded!");
 
-    AudioManager.playMusic('main_theme');
   }
 
   void gameOver(){
     if (gameIsOver) return;
     gameIsOver = true;
+    gameUI.onGameOver();
     LogDebug.printToHUD(this, "Game Over!");
   }
 
   void gameWin(){
     if (gameIsOver) return;
     gameIsOver = true;
+    gameUI.onGameWin();
     LogDebug.printToHUD(this, "You Win!");
   }
 
   void gameStart(){
     gameStarted = true;
+    AudioManager.playMusic('main_theme');
     player.startShooting();
     gameWave.startRun();
     gameUI.onGameStart();
+    gameUI.toogleTutorial(true);
   }
 
   void resetGame(){
