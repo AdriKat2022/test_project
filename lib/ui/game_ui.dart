@@ -128,6 +128,12 @@ class GameUI extends Component with HasGameReference<SpaceShooterGame>{
     scoreComponent.position = Vector2(gameSize.x - 50, 50);
     _restartButton.position = Vector2(gameSize.x/2 , gameSize.y - 50);
     _colorSelector.position = Vector2(gameSize.x - 150, gameSize.y - 50);
+    _showDebugButton.position = Vector2(100, gameSize.y - 100);
+    _playButton.position = Vector2(gameSize.x/2 , gameSize.y/2);
+    _beginNotification.position = Vector2(gameSize.x/2, gameSize.y/4);
+    _weaponTutorialNotification.position = Vector2(gameSize.x/2, 3*gameSize.y/4);
+    _gameOverNotification.position = Vector2(gameSize.x/2, gameSize.y/4);
+    _winNotification.position = Vector2(gameSize.x/2, gameSize.y/4);
   }
 
   void onGameStart(){
