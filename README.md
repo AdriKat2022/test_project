@@ -40,5 +40,12 @@ A small Shoot'Em Up! project that aims at demonstrating my capacities to adapt t
 - Generic object pool.
 
 ## Commands
-- [Mouse]: Move the ship.
-- [SPACE]: Start / Switch Weapons
+- [*Mouse*]: Move the ship.
+- [*SPACE*]: Start / Switch Weapons
+
+# Credits
+- Fonts  
+    - [**Fragile Bombers**](https://www.dafont.com/fragile-bombers.font), by Typodermic Fonts.  
+    - [**Good Timing**](https://typodermicfonts.com/good-timing/), by Typodermic Fonts.
+- Assets
+    - [**Space Shooter Asset Pack**](https://gvituri.itch.io/space-shooter), by Gustavo Vituri.
