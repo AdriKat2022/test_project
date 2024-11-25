@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:ui';
 
 import 'package:flame/components.dart';
-import 'package:test_project/UI/button_component.dart';
+import 'package:test_project/ui/button_component.dart';
 import 'package:test_project/components/simple_square.dart';
 
 /// ColorSelector: A DoubleSelectionButton to select colors
