@@ -1,6 +1,7 @@
 import 'package:flame/components.dart';
 import 'package:test_project/main.dart';
 import 'package:test_project/components/enemy.dart';
+import 'package:test_project/utils/log_debug.dart';
 import 'package:test_project/utils/object_pool.dart';
 import 'package:test_project/data/wave_data.dart';
 
@@ -48,6 +49,7 @@ class WaveManager extends Component with HasGameReference<SpaceShooterGame> {
         isWaveActive = true;
         timeSinceWaveStarted = 0;
         nextEnemyTime = 0;
+        LogDebug.printToHUD(game, "Wave $currentWaveIndex started.");
       }
       return;
     }
@@ -67,9 +69,17 @@ class WaveManager extends Component with HasGameReference<SpaceShooterGame> {
       }
       else {
         // No more enemies, wave is complete.
+        LogDebug.printToHUD(game, "Wave $currentWaveIndex complete.");
         isWaveActive = false;
         currentWaveIndex++;
         enemyIndex = 0;
+        if (currentWaveIndex < waveDataList.length) {
+          LogDebug.printToHUD(game, "Next wave in ${waveDataList[currentWaveIndex].prewaveDelay} seconds.");
+        }
+        else
+        {
+          LogDebug.printToHUD(game, "No more waves.");
+        }
       }
     }
   }

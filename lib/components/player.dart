@@ -126,6 +126,7 @@ class Player extends SpriteAnimationComponent with HasGameReference<SpaceShooter
   void damagePlayer(){
     spriteColorFlash.activate();
     takeDamage(1);
+    LogDebug.printToHUD(game, "Player took damage. HP: ${getHp()}");
     if (isHpZeroOrBelow()){
       disablePlayer();
     }

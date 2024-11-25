@@ -1,12 +1,13 @@
 
 import 'package:flame/components.dart';
-import 'package:test_project/UI/button.dart';
+import 'package:test_project/UI/button_component.dart';
 import 'package:test_project/UI/color_selector.dart';
 import 'package:test_project/UI/hearts_bar.dart';
 import 'package:test_project/UI/score_component.dart';
 import 'package:test_project/data/font_palette.dart';
 import 'package:test_project/effects/fade_out_text_notification.dart';
 import 'package:test_project/main.dart';
+import 'package:test_project/ui/toogle_button.dart';
 import 'package:test_project/utils/log_debug.dart';
 
 class GameUI extends Component with HasGameReference<SpaceShooterGame>{
@@ -23,6 +24,8 @@ class GameUI extends Component with HasGameReference<SpaceShooterGame>{
   late final FadingNotificationText _weaponTutorialNotification;
   late final FadingNotificationText _gameOverNotification;
   late final FadingNotificationText _winNotification;
+
+  late final ToogleButton _showDebugButton;
 
   GameUI({required Function restartGameFunction}) : _restartGameFunction = restartGameFunction;
 
@@ -49,6 +52,30 @@ class GameUI extends Component with HasGameReference<SpaceShooterGame>{
     scoreComponent.anchor = Anchor.topRight;
     scoreComponent.scale = Vector2.all(2);
     add(scoreComponent);
+
+    _showDebugButton = ToogleButton(
+      position: Vector2(100, game.size.y - 100),
+      size: Vector2.all(50),
+      text: 'Show Debug',
+      fontSize: 25,
+      onChange: () {
+        if (_showDebugButton.isOn) {
+          LogDebug.showDebug = true;
+          LogDebug.printToHUD(game, "Debug log mode: [${_showDebugButton.isOn? 'ON' : 'OFF'}]");
+        }
+        else {
+          LogDebug.printToHUD(game, "Debug log mode: [${_showDebugButton.isOn? 'ON' : 'OFF'}]");
+          LogDebug.showDebug = false;
+        }
+      },
+      offNormalSprite: await Sprite.load('ui/buttons/toogle_btn.png'),
+      offHoverSprite: await Sprite.load('ui/buttons/toogle_btn_hover.png'),
+      offPressedSprite: await Sprite.load('ui/buttons/toogle_btn_pressed.png'),
+      onNormalSprite: await Sprite.load('ui/buttons/toogle_btn_on.png'),
+      onHoverSprite: await Sprite.load('ui/buttons/toogle_btn_on_hover.png'),
+      onPressedSprite: await Sprite.load('ui/buttons/toogle_btn_on_pressed.png'),
+    );
+    add(_showDebugButton);
 
     _playButton = ButtonComponent(
         text: 'Play',

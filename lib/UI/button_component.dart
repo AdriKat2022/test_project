@@ -9,10 +9,10 @@ class ButtonComponent extends SpriteComponent with TapCallbacks, HoverCallbacks 
   /// The function that will be called when the button is pressed.
   final VoidCallback onPressed;
 
-  final Sprite normalSprite;
-  final Sprite? hoverSprite;
-  final Sprite? pressedSprite;
-  final Sprite? disabledSprite;
+  Sprite normalSprite;
+  Sprite? hoverSprite;
+  Sprite? pressedSprite;
+  Sprite? disabledSprite;
 
   ButtonComponent({
     required this.text,

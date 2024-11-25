@@ -80,7 +80,7 @@ class SpaceShooterGame extends FlameGame with PanDetector, HasCollisionDetection
 
   void gameStart(){
     gameStarted = true;
-    AudioManager.playMusic('main_theme');
+    AudioManager.playMusic('main_theme', forceRestart: false);
     player.startShooting();
     gameWave.startRun();
     gameUI.onGameStart();
